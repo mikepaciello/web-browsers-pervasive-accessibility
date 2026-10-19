@@ -1,0 +1,1769 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Web Browsers as a Pervasive Accessibility Solution</title>
+<meta name="author" content="Michael G. Paciello">
+<meta name="description" content="A research paper by Michael G. Paciello on the browser as the layer for universal, personalized web accessibility. Review draft, version 1.5 (October 2026).">
+<style>
+  :root{
+    --bg:#ffffff; --fg:#1a1a1a; --muted:#5a5a5a; --link:#0b5394;
+    --link-visited:#6b3fa0; --rule:#d7d7d7; --band:#f4f6f8; --maxw:46rem;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#15181c; --fg:#e8e8e8; --muted:#aeb4bb; --link:#7db1ea;
+      --link-visited:#c3a6e8; --rule:#3a3f45; --band:#1d2127; }
+  }
+  *{box-sizing:border-box}
+  html{font-size:112.5%}
+  body{margin:0;background:var(--bg);color:var(--fg);
+    font-family:Georgia, "Times New Roman", serif; line-height:1.65;}
+  .skip{position:absolute;left:-999px;top:auto;background:var(--fg);color:var(--bg);
+    padding:.6rem 1rem;z-index:10;border-radius:0 0 .4rem 0;}
+  .skip:focus{left:0;top:0}
+  header.site{background:var(--band);border-bottom:1px solid var(--rule);padding:1.5rem 1rem;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 1rem;}
+  header.site .wrap{padding:0 1rem}
+  h1,h2,h3,h4{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.25;color:var(--fg);}
+  main h1{font-size:1.9rem;margin:2.4rem 0 .8rem;padding-top:1rem;border-top:1px solid var(--rule);}
+  main h1:first-of-type{border-top:none;padding-top:0}
+  main h2{font-size:1.35rem;margin:1.8rem 0 .6rem}
+  main h3{font-size:1.1rem;margin:1.4rem 0 .5rem}
+  p,li{font-size:1rem}
+  a{color:var(--link)} a:visited{color:var(--link-visited)}
+  a:focus{outline:3px solid var(--link);outline-offset:2px}
+  main{padding:2rem 0 4rem}
+  table{border-collapse:collapse;width:100%;margin:1.2rem 0;font-size:.92rem;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  th,td{border:1px solid var(--rule);padding:.5rem .6rem;text-align:left;vertical-align:top}
+  th{background:var(--band);font-weight:700}
+  caption{caption-side:top;text-align:left;font-weight:700;margin-bottom:.4rem}
+  blockquote{border-left:4px solid var(--rule);margin:1rem 0;padding:.3rem 0 .3rem 1rem;color:var(--muted)}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.9em;
+    background:var(--band);padding:.1em .3em;border-radius:.2em}
+  .docnote{background:var(--band);border:1px solid var(--rule);border-radius:.5rem;
+    padding:1rem 1.2rem;margin:1.5rem 0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:.95rem}
+  .byline{color:var(--muted);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .downloads{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:.95rem;margin-top:.8rem}
+  footer.site{border-top:1px solid var(--rule);background:var(--band);padding:1.5rem 1rem;
+    color:var(--muted);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:.9rem}
+  img{max-width:100%;height:auto}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<header class="site">
+  <div class="wrap">
+    <p class="byline">Research paper &middot; Review draft v1.5 (October 2026)</p>
+    <h1 style="border:none;margin:.2rem 0 .3rem;font-size:2rem">Web Browsers as a Pervasive Accessibility Solution</h1>
+    <p class="byline" style="font-size:1.05rem">Current capabilities, public evidence, and a roadmap for personalized accessibility in the user agent</p>
+    <p class="byline"><strong>Michael G. Paciello</strong></p>
+    <p class="downloads">Download:
+      <a href="web-browsers-as-a-pervasive-accessibility-solution.pdf">Tagged PDF</a> &middot;
+      <a href="web-browsers-as-a-pervasive-accessibility-solution.docx">Word (.docx)</a>
+    </p>
+  </div>
+</header>
+<main id="main" class="wrap">
+  <div class="docnote" role="note">
+    <strong>Work in progress.</strong> This is a review draft, subject to peer review for accuracy.
+    Figures and claims are sourced but not yet independently verified by reviewers.
+    &copy; 2026 Michael G. Paciello. All rights reserved. May be shared for review and cited with
+    attribution; not otherwise reproduced or republished without the author's written permission.
+  </div>
+
+
+
+
+
+<h1 id="contents">Contents</h1>
+<ul>
+<li><p><a href="#abstract">Abstract</a></p></li>
+</ul>
+<ul>
+<li><p><a href="#key-findings">Key findings</a></p></li>
+<li><p><a href="#introduction">1. Introduction</a></p></li>
+<li><p><a href="#engine-architecture-and-accessibility-foundations">2. Engine architecture and accessibility foundations</a></p></li>
+<li><p><a href="#engine-and-browser-profiles">3. Engine and browser profiles</a></p></li>
+<li><p><a href="#what-browsers-already-do-for-users">4. What browsers already do for users</a></p></li>
+<li><p><a href="#public-evidence-on-consistency">5. Public evidence on consistency</a></p></li>
+<li><p><a href="#post-source-accessibility">6. Post-source accessibility</a></p></li>
+<li><p><a href="#aria-as-a-post-source-remediation-strategy">7. ARIA as a post-source remediation strategy</a></p></li>
+<li><p><a href="#regulatory-context">8. Regulatory context</a></p></li>
+<li><p><a href="#gap-analysis">9. Gap analysis</a></p></li>
+<li><p><a href="#sec_newai">10. On-device AI and the engines’ stated concerns</a></p></li>
+<li><p><a href="#roadmap-for-engine-and-browser-teams">11. Roadmap for engine and browser teams</a></p></li>
+<li><p><a href="#the-business-case">12. The business case</a></p></li>
+<li><p><a href="#the-challenge-to-the-browser-industry">13. The challenge to the browser industry</a></p></li>
+<li><p><a href="#questions-for-discussion">14. Questions for discussion</a></p></li>
+<li><p><a href="#conclusions">15. Conclusions</a></p></li>
+<li><p><a href="#appendix-a.-u.s.-and-european-regulatory-comparison">Appendix A. U.S. and European regulatory comparison</a></p></li>
+<li><p><a href="#appendix-b.-evidence-sources">Appendix B. Evidence sources</a></p></li>
+<li><p><a href="#disclosures">Disclosures</a></p></li>
+<li><p><a href="#about-the-author">About the author</a></p></li>
+<li><p><a href="#references">References</a></p></li>
+</ul>
+<h1 id="abstract">Abstract</h1>
+<p>People with disabilities meet the web through a browser. Every page they read has been parsed, styled, laid out, and exposed to assistive technology by a browser engine. This paper asks how far today's engines and browsers already go toward making content usable for each person, what public evidence shows about the consistency of that support, and what engineering work would let a user state their needs once and have every page adapted to them.</p>
+<p>The paper examines the three engines that underlie mainstream browsing (Chromium's Blink, WebKit, and Gecko) and two emerging engines (Servo and Ladybird). It draws on vendor documentation and source code, W3C specifications, the Interop 2024 accessibility focus area, Web Platform Tests (WPT), W3C ARIA-AT results, PowerMapper screen reader tests, and MDN browser-compat-data. Where no public data exists, the paper says so and labels any judgment as the author's assessment.</p>
+<p>Four findings stand out. First, the engines have converged on similar accessibility architectures and agree closely on how they compute roles and accessible names: in the Interop 2024 accessibility focus area, all four tested browsers finished the year at or above 99.7% in preview builds. Second, browsers already ship many user-side aids, including automatic image descriptions, live captions, reading modes with read-aloud, and color overrides, but each is vendor-specific, uneven across engines, and not driven by standardized user preferences. Third, agreement on what browsers compute does not yet mean that people using screen readers hear the same thing in every browser. The W3C ARIA-AT project tests exactly this: it takes correctly built reference examples of common controls, such as tabs, dialogs, and menus, and checks what JAWS, NVDA, and VoiceOver actually convey with specific browsers (at the Candidate stage, JAWS and NVDA with Chrome, and VoiceOver with Safari). Because the examples are reviewed reference implementations, a failure points to the browser, the screen reader, or the way they interact, rather than to the web author. Only 3 of its test plans have reached the Recommended stage, about half are still at the Candidate stage, none yet covers live regions beyond alerts, and results for composite widgets still differ widely between combinations. Fourth, no current law or standard requires browsers to provide personalized adaptation. Section 508 and EN 301 549 reach browsers mainly through procurement, and the European Accessibility Act does not list standalone browsers.</p>
+<p>The paper proposes a 36-month roadmap divided between shared engine work and browser-product work, with deliverables tied to public test suites. Under stated assumptions (engineering rates derived from published compensation data; staffing and engine shares estimated by the author), the estimated cost is about $17 million to $50 million per engine-and-browser pair at large-company engineering rates (base case about $32 million), and roughly $9 million to $15 million at non-profit rates. Engine work landed once in a shared engine is available to every browser built on it. The base-case annual cost, about $10.6 million, is under 0.004% of annual revenue for Alphabet, Apple, and Microsoft, about 1.0% to 1.6% for Mozilla, and many times Servo's current donation and grant income (Ladybird does not publish a budget).</p>
+<p>The paper then makes the commercial case, built on three revenue pools that browser vendors already compete for. The first is AI agents: by Google's published guidance for Chrome, the accessibility tree that screen readers depend on is the primary way AI agents understand a page, other vendors' agent tools also read it, live-site agent success rates remain low, and forecasts of U.S. consumer spending through AI agents by 2030 range from $190 billion to $1 trillion. The second is search, advertising, and commerce from an aging population: Americans aged 50 and over accounted for 56 cents of every dollar spent in the United States in 2018, and disability rises with age. The third is per-seat enterprise and public-sector revenue, where accessibility is a condition of sale in government and education markets, subject to exceptions. Against the three largest reported revenue lines, a change of one-tenth of one percent would equal 10 to more than 26 times the base-case annual cost. The paper closes with a challenge to the browser industry: ten commitments, each measurable from public data, with dates from mid-2027 to the end of 2028.</p>
+<p><strong>Keywords:</strong> web accessibility; user agents; browser engines; accessibility tree; platform accessibility APIs; ARIA; WCAG 2.2; UAAG 2.0; EN 301 549; Section 508; European Accessibility Act; personalization; WAI-Adapt; Interop; Web Platform Tests; ARIA-AT</p>
+<h1 id="key-findings">Key findings</h1>
+<ul>
+<li><p><strong>Engines agree on computed semantics.</strong> Interop 2024 included more than 1,000 tests of accessible name and role computation (Simmons, 2025). By the end of 2024, Chrome, Edge, and Firefox preview builds passed 100% and Safari Technology Preview passed 99.7% (Web Platform Tests, n.d.-a).</p></li>
+<li><p><strong>The architectures have converged.</strong> Chromium and Firefox answer assistive technology requests from a cached copy of each page's accessibility tree held in the browser process, and WebKit has been developing an "isolated" tree, readable off the main thread, since 2019.</p></li>
+<li><p><strong>Screen reader output still varies.</strong> In PowerMapper's December 2025 tests, overall reliability ranged from 80% (JAWS with Edge; VoiceOver on iOS with Safari) to 92% (NVDA with Firefox). W3C ARIA-AT has 3 test plans at the Recommended stage, all for links.</p></li>
+<li><p><strong>Browsers already help users, but not in a standard way.</strong> All four major browsers ship a reading view; Chrome, Edge, and Firefox include read-aloud in it. Chrome and Edge offer opt-in automatic image descriptions for screen reader users. Only Safari exposes in-band audio-description tracks to web content by default, and no engine implements text audio descriptions (&lt;track kind="descriptions"&gt;).</p></li>
+<li><p><strong>There is no portable accessibility profile.</strong> Some settings sync within one vendor's account, but no browser imports or exports accessibility preferences for use in another browser, and the W3C WAI-Adapt work has had no new technical report publication since January 2023 (W3C, n.d.-a, n.d.-b).</p></li>
+<li><p><strong>Regulation reaches browsers indirectly.</strong> Section 508 classes web browsers as platform software and EN 301 549 treats user agents as software, but both apply through procurement. The European Accessibility Act lists operating systems, not browsers. EN 301 549 V4.1.1, published 2 September 2026, adds user-preference clauses for web pages (9.7) and software (11.7) and is awaiting citation in the Official Journal of the European Union.</p></li>
+<li><p><strong>The investment is modest for some vendors and not for others.</strong> The base-case annual cost, about $10.6 million, is under 0.004% of annual revenue for Alphabet, Apple, and Microsoft (about 13 to 17 minutes of revenue), about 1.0% to 1.6% of annual revenue for Mozilla depending on the cost rate assumed, and many times Servo's current donation and grant income.</p></li>
+<li><p><strong>The potential return lies in three revenue pools worth hundreds of billions of dollars.</strong> AI agents: Chrome's guidance calls the accessibility tree the primary way agents understand a page (Kulikowski &amp; Hablich, 2026), and forecasts of U.S. agent-driven consumer spending by 2030 range from $190 billion to $1 trillion. Search and advertising: Alphabet earned more than $280 billion from online advertising in 2025, and Americans aged 50 and over accounted for 56 cents of every dollar spent in the United States in 2018. Per-seat enterprise and public-sector revenue: Microsoft reports more than 450 million paid Microsoft 365 commercial seats, sold into public-sector markets where accessibility is a condition of purchase, subject to exceptions.</p></li>
+<li><p><strong>A small change would repay the cost many times over.</strong> One-tenth of one percent of Alphabet's advertising revenue, Microsoft's Productivity and Business Processes revenue, or Apple's Services revenue would equal about 10 to more than 26 times the base-case annual cost. For Firefox, the work would pay back if it retained or won about 2.1% of monthly active clients.</p></li>
+<li><p><strong>A measurable challenge.</strong> Section 13 sets out ten commitments for the browser industry, each checkable from public data, due between June 2027 and December 2028.</p></li>
+</ul>
+<h1 id="introduction">1. Introduction</h1>
+<h2 id="why-the-browser-layer">1.1 Why the browser layer</h2>
+<p>WCAG defines what accessible web content looks like, and decades of guidance, law, and litigation have been aimed at content authors. Yet the most recent WebAIM Million analysis found detected WCAG 2 failures on 95.9% of the top one million home pages, with an average of 56.1 detected errors per page, an increase over the previous year (WebAIM, 2026).</p>
+<blockquote>
+<p><strong>Author's assessment:</strong> Content remediation alone has not produced an accessible web.</p>
+</blockquote>
+<p>The browser sits between every author and every user. It already decides how content is rendered, how it is exposed to assistive technologies, and which user settings override author choices. The idea that the user's own agent should adapt content to the person is not new. It appears in early work on universal access, including the "personal interpreter" concept described in 1996 (Laux et al., 1996), and it is the premise of the W3C User Agent Accessibility Guidelines (UAAG 2.0; W3C, 2015) and of the W3C WAI-Adapt work. What has changed is capability: engines now build rich semantic trees, ship machine-learning features, and agree closely on how they compute semantics. This paper asks whether the browser can now carry a larger share of the accessibility load, and what it would take.</p>
+<p>An estimated 1.3 billion people, about 16% of the world's population, experience significant disability (World Health Organization, 2022).</p>
+<h2 id="research-questions">1.2 Research questions</h2>
+<ol type="1">
+<li><p>What do current browser engines and browsers provide, at the platform and user-interface level, that helps content become usable by people with disabilities?</p></li>
+</ol>
+<ol type="1">
+<li><p>What public, dated evidence shows how consistently that support works across engines and assistive technologies?</p></li>
+<li><p>What engineering and standards work would let a user configure their needs once and have the browser adapt any content accordingly, and what would it cost?</p></li>
+</ol>
+<h2 id="scope">1.3 Scope</h2>
+<p>The paper examines three engines that underlie essentially all mainstream browsing, and two emerging engines:</p>
+<ul>
+<li><p><strong>Chromium</strong> (Blink rendering engine, V8 JavaScript engine), used by Google Chrome, Microsoft Edge, Samsung Internet, Opera, Brave, and Vivaldi, and by embedding frameworks such as the Chromium Embedded Framework (CEF), Electron, and Qt WebEngine.</p></li>
+<li><p><strong>WebKit</strong> (WebCore, JavaScriptCore), used by Safari on macOS, iOS, iPadOS, and visionOS, and by the WebKitGTK and WPE ports on Linux.</p></li>
+<li><p><strong>Gecko</strong> (with the SpiderMonkey JavaScript engine), used by Firefox on desktop and, through GeckoView, Firefox for Android. Firefox for iOS uses WebKit.</p></li>
+<li><p><strong>Servo</strong>, a Rust-based engine that has been a Linux Foundation Europe project since September 2023, with Igalia leading development (Linux Foundation Europe, 2023).</p></li>
+<li><p><strong>Ladybird</strong>, an independent engine (LibWeb, LibJS) developed by the non-profit Ladybird Browser Initiative, which has targeted 2026 for its first alpha release (Ladybird Browser Initiative, n.d.).</p></li>
+</ul>
+<p>In StatCounter's worldwide data for September 2026, Chrome (66.36%), Safari (18.27%), Edge (6.04%), Firefox (2.80%), Samsung Internet (2.31%), and Opera (1.77%) together accounted for about 97.6% of page views (StatCounter, 2026). StatCounter counts browsers rather than engines, and it counts Chrome and Firefox on iOS as Chrome and Firefox even though they run on WebKit, so engine share cannot be read directly from these figures. Outside the European Union and Japan, Apple's App Store rules require browsers on iOS and iPadOS to use WebKit. Apple has allowed alternative engines for users in the EU since iOS 17.4 (iPadOS 18) and in Japan since iOS 26.2 (Apple, n.d.-a, n.d.-b). Apple's published criteria for those alternative engines include web-platform and JavaScript conformance thresholds but no accessibility requirement.</p>
+<h2 id="method-and-evidence">1.4 Method and evidence</h2>
+<p>Every factual statement in this paper was checked against a source read between 8 October 2026 and the date of release, with preference for primary sources: W3C specifications and test dashboards, browser vendor documentation and source code, regulatory texts, and company filings. Sources and access dates appear in the References. Three kinds of statement are distinguished:</p>
+<ul>
+<li><p><strong>Measured:</strong> results from public test suites (Interop, WPT, ARIA-AT, PowerMapper) or compatibility data (MDN browser-compat-data, caniuse), cited with the date of the run or report.</p></li>
+<li><p><strong>Documented:</strong> features and behaviors stated in vendor documentation or visible in published source code.</p></li>
+<li><p><strong>Author's assessment:</strong> judgments about significance, priority, or likely effort. These appear in separate, boxed notes headed "Author's assessment", so readers can always tell the author's interpretation apart from verified fact and weigh it accordingly.</p></li>
+</ul>
+<p>The paper does not report new user testing. Its cost and return figures are estimates built from stated assumptions and public financial data, and Section 12 shows the arithmetic so readers can substitute their own.</p>
+<h2 id="terminology-content-conformance-and-user-agent-conformance">1.5 Terminology: content conformance and user agent conformance</h2>
+<p>WCAG applies to web content (W3C, 2024). Browsers are not evaluated for WCAG conformance, although the browser's own interface can be, and Section 508 applies WCAG 2.0 to software user interfaces (U.S. Access Board, 2017, E207.2). The W3C guideline written for browsers is UAAG 2.0, which is a W3C Working Group Note from December 2015, not a Recommendation (W3C, 2015). The working group that produced it has closed, and W3C has said it does not plan to advance UAAG 2.0 and intends to include user agent considerations in future guidelines work (W3C WAI, 2024a). Several gaps identified in this paper correspond to UAAG 2.0 success criteria that were specified in 2015 but are not consistently implemented. Section 9 maps them.</p>
+<h1 id="engine-architecture-and-accessibility-foundations">2. Engine architecture and accessibility foundations</h1>
+<h2 id="the-accessibility-tree">2.1 The accessibility tree</h2>
+<p>Each engine builds an accessibility tree from the Document Object Model (DOM) and computed styles. Each node carries a role, an accessible name and description, states, properties, and relationships. Native HTML semantics are mapped according to the HTML Accessibility API Mappings (HTML-AAM), ARIA semantics according to the Core Accessibility API Mappings (Core-AAM), and names and descriptions according to the Accessible Name and Description Computation (AccName) (W3C, 2026a, 2026e, 2026f).</p>
+<p>Engines may omit, or mark as ignored, nodes that carry no semantics, such as a div or span with no role, name, or focusability. Their children remain exposed under the nearest included ancestor. The exact rules are engine- and platform-specific and are not fully specified. When a generic element is exposed, Core-AAM maps its generic role to platform roles such as UIA Group and AXGroup (W3C, 2026a). role="none" removes only an element's own semantics, and browsers ignore it on elements that are focusable or carry global ARIA attributes; aria-hidden="true" and display: none remove the whole subtree. Construction is lazy and incremental: Chromium, for example, builds accessibility objects on demand and sends batched updates after layout (Chromium Project, n.d.-a).</p>
+<h2 id="platform-accessibility-apis">2.2 Platform accessibility APIs</h2>
+<p>Browsers expose the tree to assistive technologies through operating system APIs.</p>
+<p><strong>Windows.</strong> Microsoft Active Accessibility (MSAA) was introduced as a platform add-in for Windows 95 (Microsoft, n.d.-a); a December 1997 Microsoft message to the W3C WAI Interest Group describes the MSAA 1.1 redistributable and its inclusion in Windows 98 (Oppermann, 1997). Microsoft describes UI Automation (UIA) as a newer, more capable technology and continues to support MSAA for backward compatibility (Microsoft, n.d.-a). IAccessible2 (IA2) extends MSAA. It was developed by IBM and contributed to the Free Standards Group in December 2006; the Free Standards Group merged with OSDL in 2007 to form the Linux Foundation, which now hosts the specification (Updegrove, 2006; Linux Foundation, n.d.). Since Chrome 138 in 2025, Chromium has exposed native UIA by default, the result of a joint Microsoft Edge and Google effort, while keeping its MSAA and IA2 implementation (Beaudry, 2025). NVDA continues to use IA2 by default with Chromium; an NVDA maintainer has described Chromium's UIA implementation as weaker than its IA2 implementation (NV Access, 2025). Firefox implements MSAA and IA2 and also includes a native UIA provider (Mozilla, n.d.-a).</p>
+<p><strong>macOS.</strong> Browsers implement AppKit's NSAccessibility protocol, the "AX API" in W3C mapping specifications (Apple, n.d.-c).</p>
+<p><strong>iOS, iPadOS, and visionOS.</strong> Apps expose accessibility through UIKit's UIAccessibility, not NSAccessibility (Apple, n.d.-d). VoiceOver is common to all Apple platforms, but the APIs differ.</p>
+<p><strong>Linux.</strong> Chromium and Firefox implement ATK, which is bridged to the AT-SPI2 D-Bus protocol. WebKitGTK and WPE WebKit have used AT-SPI2 directly, without ATK, since 2022 (WebKit Bugzilla, 2022). Orca is the principal Linux screen reader. Sun Microsystems engineers, working with Mozilla, built much of Firefox's early Linux accessibility support in the mid-2000s (Mozilla, n.d.-b).</p>
+<h2 id="converging-architectures">2.3 Converging architectures</h2>
+<p>Assistive technologies query platform APIs largely synchronously, while modern browsers render content in sandboxed processes. All three major engines have adopted, or are developing, similar approaches:</p>
+<ul>
+<li><p><strong>Chromium</strong> builds the tree in the renderer, serializes batched updates to the browser process, and answers assistive technology requests from that cached copy without blocking on the renderer (Chromium Project, n.d.-a).</p></li>
+<li><p><strong>Firefox</strong> re-architected its accessibility engine ("Cache the World") so the parent process holds a cache of every content process's tree. It shipped on Android in Firefox 102, on Windows and Linux in Firefox 112, and on macOS in Firefox 113 (May 2023); Mozilla reported improvements of up to 20 times in worst cases (Mozilla Accessibility Team, 2023).</p></li>
+<li><p><strong>WebKit</strong> has developed an "isolated" accessibility tree since 2019, a read-only copy that macOS assistive technology requests can query off the main thread, with work continuing through 2025 (WebKit Bugzilla, 2019, 2025).</p></li>
+</ul>
+<blockquote>
+<p><strong>Author's assessment:</strong> This convergence matters for the roadmap. A cached, serializable tree in a privileged process is the natural place to apply user-preference-driven transformations and to repair semantics, because it is already where engines reconcile what content says with what assistive technology receives.</p>
+</blockquote>
+<h2 id="engines-at-a-glance">2.4 Engines at a glance</h2>
+<p><strong>Table 1. Browser engines examined in this paper (status as of October 2026)</strong></p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 17%" />
+<col style="width: 15%" />
+<col style="width: 18%" />
+<col style="width: 20%" />
+<col style="width: 18%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Engine</strong></th>
+<th><strong>Primary steward</strong></th>
+<th><strong>Rendering / JS engine</strong></th>
+<th><strong>Browsers and embedders</strong></th>
+<th><strong>Accessibility API support</strong></th>
+<th><strong>Notes</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Chromium (Blink)</td>
+<td>Google, with major contributions from Microsoft and others</td>
+<td>Blink / V8</td>
+<td>Chrome, Edge, Samsung Internet, Opera, Brave, Vivaldi; CEF, Electron, Qt WebEngine</td>
+<td>MSAA, IA2, UIA (default since Chrome 138); NSAccessibility; ATK/AT-SPI; Android</td>
+<td>3 of the 6 owners listed in ui/accessibility/OWNERS use microsoft.com addresses (Chromium Project, 2026b)</td>
+</tr>
+<tr class="even">
+<td>WebKit</td>
+<td>Apple, with ports maintained by Igalia and others</td>
+<td>WebCore / JavaScriptCore</td>
+<td>Safari; all iOS browsers outside the EU and Japan; WebKitGTK; WPE</td>
+<td>NSAccessibility (macOS); UIAccessibility (iOS, iPadOS, visionOS); AT-SPI2 directly (GTK, WPE)</td>
+<td>Isolated accessibility tree in development since 2019</td>
+</tr>
+<tr class="odd">
+<td>Gecko</td>
+<td>Mozilla</td>
+<td>Gecko / SpiderMonkey</td>
+<td>Firefox (desktop and Android via GeckoView)</td>
+<td>MSAA, IA2, native UIA provider; NSAccessibility; ATK/AT-SPI; Android</td>
+<td>Parent-process tree cache since 2022–2023</td>
+</tr>
+<tr class="even">
+<td>Servo</td>
+<td>Linux Foundation Europe; development led by Igalia</td>
+<td>Servo / SpiderMonkey (via mozjs)</td>
+<td>servoshell demo browser; embeddable Rust library published April 2026</td>
+<td>Web-content accessibility through AccessKit, behind a preference (2026)</td>
+<td>Grant-funded accessibility work, 2025–2026</td>
+</tr>
+<tr class="odd">
+<td>Ladybird</td>
+<td>Ladybird Browser Initiative (US non-profit)</td>
+<td>LibWeb / LibJS</td>
+<td>Ladybird (pre-alpha; alpha targeted for 2026 on Linux and macOS)</td>
+<td>Screen reader support proposed (pull request #9156; merge status unconfirmed as of 9 October 2026)</td>
+<td>Donation-funded; BSD-2-Clause license</td>
+</tr>
+</tbody>
+</table>
+<p>Sources: Beaudry (2025); Chromium Project (2026b); WebKit Bugzilla (2019); Mozilla Accessibility Team (2023); Linux Foundation Europe (2023); Servo Project (2026a, 2026c, n.d.-b); Ladybird Browser Initiative (n.d., 2026).</p>
+<h1 id="engine-and-browser-profiles">3. Engine and browser profiles</h1>
+<h2 id="chromium">3.1 Chromium</h2>
+<p>Blink builds the accessibility tree in the renderer process. Code in content/renderer/accessibility serializes batched tree updates to the browser process, where frame trees are combined and cached. Platform implementations derive from a common abstraction in ui/accessibility/platform (Chromium Project, n.d.-a, n.d.-b). Chrome DevTools can replace the DOM tree in the Elements panel with a full-page accessibility tree, and its Accessibility pane shows computed properties for each node (Google, 2026a).</p>
+<p>Chromium also contains a chrome.automation API that exposes the accessibility tree to extensions. It is a private API restricted to an allowlist of extension IDs and Google component extensions, such as ChromeOS's ChromeVox screen reader; it is not available to ordinary Chrome Web Store extensions (Chromium Project, 2026a). Public extensions can inject user-origin CSS through chrome.scripting.insertCSS with origin: "USER" (Google, n.d.-a).</p>
+<h2 id="webkit-and-safari">3.2 WebKit and Safari</h2>
+<p>On macOS, WebKit implements NSAccessibility; on iOS, iPadOS, and visionOS it implements UIKit accessibility. VoiceOver's rotor lets users move through web content by element type, using structure that WebKit exposes. Safari's Web Inspector shows, for a selected element, how it is exposed to assistive technologies, and its Audit tab includes a default accessibility audit (Apple, n.d.-e; WebKit Project, 2022). Safari is the only one of the four major browsers that exposes in-band alternate audio tracks, including audio-description tracks, to web content by default (HTMLMediaElement.audioTracks); Chromium and Gecko expose that API only behind flags (MDN, 2026). WebKit source code shows that Apple builds read the operating system's preferred audio characteristics when selecting tracks (WebKit Project, 2026); this is a reading of source code, not a tested result.</p>
+<h2 id="gecko-and-firefox">3.3 Gecko and Firefox</h2>
+<p>Mozilla's accessibility work was under way at Netscape by early 2001, with Netscape engineer Aaron Leventhal as its public lead, and Mozilla announced its first accessibility alpha, with MSAA support and keyboard access, in December 2001 (Leventhal, 2001a, 2001b, 2001c). In 2007 the Mozilla Foundation funded NV Access, the developer of NVDA, to improve support for rich web content in Firefox (Hecker, 2007). Firefox's Accessibility Inspector shows the full accessibility tree and can check pages for contrast, keyboard, and text-label issues, simulate color-vision deficiencies, and show tabbing order (Mozilla, n.d.-c).</p>
+<h2 id="servo">3.4 Servo</h2>
+<p>Servo began exposing web-content accessibility in early 2026 using AccessKit, gated behind an accessibility_enabled preference. Each webview exposes its own tree, which the embedding application attaches to its interface tree; on Linux the result reaches Orca through AT-SPI, and incremental tree updates were added in mid-2026 (Servo Project, n.d.-b, 2026a, 2026b). Germany's Sovereign Tech Agency has invested €545,400 in Servo for 2025–2026, covering accessibility, embedding support, and maintainability (Sovereign Tech Agency, n.d.).</p>
+<h2 id="ladybird">3.5 Ladybird</h2>
+<p>In January 2025, W3C staff member and Ladybird contributor Mike Smith reported that Ladybird was passing nearly all accessibility-related WPT tests (Faulkner, 2025). Those tests check computed roles and names, not platform API output. A pull request titled "Add screen-reader support: Orca and VoiceOver" proposes exposing a tree built in Ladybird's WebContent process through NSAccessibility on macOS and Qt's AT-SPI2 bridge on Linux (Ladybird Browser Initiative, 2026). As of 9 October 2026, its merge status could not be confirmed from the public page.</p>
+<blockquote>
+<p><strong>Author's assessment:</strong> New engines are the clearest opportunity to design personalization into the architecture from the start, and also the most resource-constrained (see Section 12).</p>
+</blockquote>
+<h1 id="what-browsers-already-do-for-users">4. What browsers already do for users</h1>
+<p>Browsers now ship a substantial set of user-facing accessibility aids. Table 2 lists the main ones by browser. Features provided by the operating system rather than the browser are noted separately, because they are available to every browser on that platform.</p>
+<p><strong>Table 2. Selected built-in browser accessibility features, desktop unless noted (vendor documentation and source code, read 8 October 2026)</strong></p>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 19%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Feature</strong></th>
+<th><strong>Chrome</strong></th>
+<th><strong>Edge</strong></th>
+<th><strong>Firefox</strong></th>
+<th><strong>Safari</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Automatic descriptions of unlabeled images for screen reader users</td>
+<td>Yes, opt-in; images sent to Google; setting syncs with account</td>
+<td>Yes, opt-in (Edge 97+ policy); Microsoft cloud service; includes text recognition</td>
+<td>Drafts alt text only for images a user adds in its PDF editor, using an on-device model (Firefox 130+)</td>
+<td>No browser feature; VoiceOver describes images at the operating system level</td>
+</tr>
+<tr class="even">
+<td>Live captions for audio the browser plays</td>
+<td>Live Caption, on-device, opt-in; optional translation sends captions to Google</td>
+<td>Windows only (Edge 103+); Microsoft states it is not generally available</td>
+<td>None built in</td>
+<td>No browser feature; Live Captions is an operating system feature</td>
+</tr>
+<tr class="odd">
+<td>Reading view with spacing and theme controls</td>
+<td>Reading mode</td>
+<td>Reading mode (formerly Immersive Reader; Edge 149+)</td>
+<td>Reader View</td>
+<td>Reader (theme, font, and zoom)</td>
+</tr>
+<tr class="even">
+<td>Read aloud with voice choice</td>
+<td>Yes, with word or sentence highlighting</td>
+<td>Yes</td>
+<td>Yes (Narrate)</td>
+<td>Listen to Page on iOS 17+ (no Apple documentation found)</td>
+</tr>
+<tr class="odd">
+<td>Caret browsing</td>
+<td>Yes (F7)</td>
+<td>Yes (F7)</td>
+<td>Yes (F7)</td>
+<td>No documented mode</td>
+</tr>
+<tr class="even">
+<td>Page zoom range</td>
+<td>25%–500%</td>
+<td>Chromium-based (range not separately documented)</td>
+<td>20%–500% (Firefox 158 release branch, read 8 October 2026)</td>
+<td>Not documented by Apple</td>
+</tr>
+<tr class="odd">
+<td>Text-only scaling or minimum font size</td>
+<td>Font size and minimum font size</td>
+<td>Page zoom settings</td>
+<td>Zoom text only; minimum font size</td>
+<td>Minimum font size</td>
+</tr>
+<tr class="even">
+<td>Forced colors (Windows contrast themes)</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes, plus its own cross-platform color override</td>
+<td>Not implemented</td>
+</tr>
+<tr class="odd">
+<td>Native user style sheet</td>
+<td>No (removed in Chrome 33, 2014); extensions only</td>
+<td>No; extensions only</td>
+<td>Yes, behind an advanced preference</td>
+<td>Yes (macOS Settings &gt; Advanced)</td>
+</tr>
+<tr class="even">
+<td>Enhanced focus indicator setting</td>
+<td>"Show a quick highlight on the focused object"</td>
+<td>"Show a high visibility outline on the focused object"</td>
+<td>No equivalent setting found</td>
+<td>No equivalent setting found</td>
+</tr>
+<tr class="odd">
+<td>Page translation</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes, on-device</td>
+<td>Yes</td>
+</tr>
+<tr class="even">
+<td>Opt-in artificial intelligence (AI) summarize or explain</td>
+<td>Gemini in Chrome</td>
+<td>Copilot in Reading mode</td>
+<td>Sidebar chatbot prompts</td>
+<td>Apple Intelligence Summarize in Reader</td>
+</tr>
+</tbody>
+</table>
+<p>Sources: Google (n.d.-b, n.d.-c, n.d.-d, n.d.-e, 2026b); Microsoft (2022, 2025a, 2026a, 2026b, 2026c, n.d.-b); Mozilla (2024a, 2026b, n.d.-d, n.d.-e, n.d.-f, n.d.-g); Apple (n.d.-f, n.d.-g); Chromium Project (2013, 2026c). Zoom ranges are taken from Chromium and Firefox source code. Availability of AI features varies by region, language, and account.</p>
+<p>Several conclusions follow:</p>
+<ul>
+<li><p><strong>Repair already happens at the user's side.</strong> Chrome and Edge describe unlabeled images on request, and Chrome runs text recognition on scanned PDFs for screen reader users (Google, 2024). These features do not change the page's markup, so authors remain responsible for text alternatives under WCAG 1.1.1.</p></li>
+<li><p><strong>Text-spacing control exists only inside reading views.</strong> Users can adjust line, letter, and word spacing in Chrome, Edge, and Firefox reading views, but not on arbitrary pages without an extension or a user style sheet.</p></li>
+<li><p><strong>Audio description is the least supported media feature.</strong> No engine implements text-based &lt;track kind="descriptions"&gt;; each has an open implementation bug (MDN, 2026).</p></li>
+<li><p><strong>Developer tools are already substantial.</strong> Chrome, Edge, and Firefox show full accessibility trees and simulate vision deficiencies, and Safari offers an accessibility audit. None of them previews what a screen reader would announce.</p></li>
+<li><p><strong>Each feature is configured separately, per browser.</strong> No feature is driven by a standardized description of the user's needs.</p></li>
+</ul>
+<h1 id="public-evidence-on-consistency">5. Public evidence on consistency</h1>
+<p>No public test suite rates browsers against WCAG, because WCAG applies to web content; a browser's own interface can be evaluated (Section 1.5), but that is not what these suites measure. What public suites measure is narrower: whether a browser implements a feature that authors rely on, what it computes and exposes to accessibility APIs, and what a particular screen reader announces with a particular browser. Tables 3 and 4 therefore report only measured or documented results, never a rating of a browser's "WCAG support".</p>
+<h2 id="interop-2024-and-web-platform-tests">5.1 Interop 2024 and Web Platform Tests</h2>
+<p>Interop is a cross-browser effort in which browser vendors agree on focus areas and track pass rates on shared tests. Accessibility was a scored focus area only in 2024. It covered computation of accessible names and roles for ARIA roles and HTML elements (Simmons, 2024). Accessibility testing has continued as an investigation in 2025 and 2026, aimed at expanding platform-API testing (Web Platform Tests, n.d.-c).</p>
+<p><strong>Table 3. Interop 2024 accessibility focus area scores (wpt.fyi data files, read 8 October 2026)</strong></p>
+<table>
+<colgroup>
+<col style="width: 38%" />
+<col style="width: 12%" />
+<col style="width: 11%" />
+<col style="width: 13%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Run series and date</strong></th>
+<th><strong>Chrome</strong></th>
+<th><strong>Edge</strong></th>
+<th><strong>Firefox</strong></th>
+<th><strong>Safari</strong></th>
+<th><strong>All four pass</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Stable releases, 1 January 2024</td>
+<td>82.8%</td>
+<td>82.8%</td>
+<td>80.3%</td>
+<td>84.6%</td>
+<td>75.7%</td>
+</tr>
+<tr class="even">
+<td>Preview builds, 30 December 2024</td>
+<td>100%</td>
+<td>100%</td>
+<td>100%</td>
+<td>99.7%</td>
+<td>99.7%</td>
+</tr>
+<tr class="odd">
+<td>Stable releases, 6 February 2025 (Chrome 133, Edge 132, Firefox 135, Safari 18.3)</td>
+<td>95.6%</td>
+<td>95.6%</td>
+<td>95.6%</td>
+<td>99.7%</td>
+<td>95.3%</td>
+</tr>
+</tbody>
+</table>
+<p>The WPT accessibility directories continue to be run daily. For the aligned stable runs of 6 October 2026 (Chrome 154, Edge 154, Firefox 157, Safari 27.0), subtest pass rates were: AccName, Chrome 96.5%, Firefox 95.5%, Safari 95.5%; WAI-ARIA, Chrome 98.8%, Firefox 96.9%, Safari 94.8%; HTML-AAM, Chrome 87.4%, Firefox 87.8%, Safari 94.9%. Edge matched Chrome within one subtest (Web Platform Tests, 2026).</p>
+<p>These results measure the browser's internally computed role and name, through the WebDriver "Get Computed Role" and "Get Computed Label" commands. They do not measure what platform APIs expose or what screen readers say. A newer WPT test type, being developed by Igalia with NLnet funding, checks platform mappings for IA2, the macOS AX API, and ATK/AT-SPI; its coverage is still partial (Web Platform Tests, n.d.-b; NLnet, n.d.).</p>
+<h2 id="assistive-technology-output">5.2 Assistive technology output</h2>
+<p>Two sources report what screen readers actually convey with specific browsers.</p>
+<p><strong>Why this matters.</strong> A browser can compute the right role and name and still fail the user, because what a person actually hears depends on how the browser passes that information to the operating system and how the screen reader interprets it. Readers wary of ARIA should note that ARIA-AT does not test whether web authors use ARIA well. It uses correctly built reference examples from the W3C ARIA Authoring Practices Guide, so a failure shows that even correct code is not yet conveyed consistently, which web authors cannot fix on their own.</p>
+<p><strong>W3C ARIA-AT</strong> tests ARIA Authoring Practices Guide examples with JAWS, NVDA, and VoiceOver. As of 8 October 2026, 3 test plans had reached Recommended (all link examples, November 2025), 23 were Candidate, 4 were Draft, and 15 were in research and development, including combobox and landmarks. There is no test plan for tree or treegrid, and none for live regions other than role="alert". Candidate reports cover JAWS and NVDA with Chrome and VoiceOver with Safari only, so they cannot compare Gecko with Chromium (W3C ARIA and Assistive Technologies Community Group, 2026). Selected Candidate results, which the project marks "Unapproved Report", are shown in Table 4.</p>
+<p><strong>PowerMapper</strong> publishes screen reader compatibility tests across about 195 test cases. Its December 2025 results report overall reliability of 81% for JAWS with Chrome, 80% for JAWS with Edge, 84% for JAWS with Firefox, 90% for NVDA with Chrome, 90% for NVDA with Edge, 92% for NVDA with Firefox, 88% for VoiceOver on macOS 15.7 with Safari 26, and 80% for VoiceOver on iOS 18.6 with Safari (PowerMapper Software, 2025). Image alt text and explicit form labels passed in every combination. PowerMapper rates labeling an &lt;audio&gt; element with aria-label at 1% reliability and with aria-labelledby at 0%, across the screen reader and browser combinations it tests, including older versions.</p>
+<p><strong>Table 4. Evidence relevant to each WCAG 2.2 guideline, by engine (feature support from MDN browser-compat-data and caniuse; assistive technology results from ARIA-AT and PowerMapper; read 8 October 2026)</strong></p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 22%" />
+<col style="width: 20%" />
+<col style="width: 19%" />
+<col style="width: 19%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>WCAG 2.2 guideline</strong></th>
+<th><strong>Chromium (Chrome, Edge)</strong></th>
+<th><strong>WebKit (Safari)</strong></th>
+<th><strong>Gecko (Firefox)</strong></th>
+<th><strong>Caveats</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1.1 Text Alternatives</td>
+<td>img alt conveyed 100% with JAWS and NVDA (PowerMapper)</td>
+<td>100% with VoiceOver on macOS and iOS (PowerMapper)</td>
+<td>100% with JAWS and NVDA (PowerMapper)</td>
+<td>Screen reader and browser measured together</td>
+</tr>
+<tr class="even">
+<td>1.2 Time-based Media</td>
+<td>WebVTT captions since Chrome 23; kind="descriptions" not implemented</td>
+<td>WebVTT since Safari 6; in-band audio tracks exposed by default; kind="descriptions" not implemented</td>
+<td>WebVTT since Firefox 31; kind="descriptions" not implemented</td>
+<td>Feature presence only; no public data on caption rendering quality</td>
+</tr>
+<tr class="odd">
+<td>1.3 Adaptable</td>
+<td>Minimal Data Grid: JAWS 75%, NVDA 83% (ARIA-AT, provisional)</td>
+<td>Minimal Data Grid: VoiceOver 69% (ARIA-AT, provisional)</td>
+<td>Not in ARIA-AT Candidate scope</td>
+<td>No ARIA-AT data yet for landmarks or combobox</td>
+</tr>
+<tr class="even">
+<td>1.4 Distinguishable</td>
+<td>forced-colors since Chrome 89, Edge 79; prefers-contrast since 96</td>
+<td>prefers-contrast since 14.1; no forced colors mode</td>
+<td>forced-colors since 89; prefers-contrast since 101</td>
+<td>No public data for zoom, reflow, or text-spacing behavior</td>
+</tr>
+<tr class="odd">
+<td>2.1 Keyboard Accessible</td>
+<td>Tabs: JAWS 100%, NVDA 95% of required assertions (ARIA-AT, provisional)</td>
+<td>Tabs: VoiceOver 66% (ARIA-AT, provisional)</td>
+<td>Not in ARIA-AT Candidate scope</td>
+<td>Screen reader interaction, not keyboard-only operation</td>
+</tr>
+<tr class="even">
+<td>2.2 Enough Time</td>
+<td>No public browser-level data</td>
+<td>No public browser-level data</td>
+<td>No public browser-level data</td>
+<td>Content responsibility</td>
+</tr>
+<tr class="odd">
+<td>2.3 Seizures and Physical Reactions</td>
+<td>prefers-reduced-motion since 74</td>
+<td>Since 10.1</td>
+<td>Since 63</td>
+<td>Feature presence only</td>
+</tr>
+<tr class="even">
+<td>2.4 Navigable</td>
+<td>:focus-visible 86; inert 102; popover 114. Modal Dialog: JAWS 100%, NVDA 94% (ARIA-AT, provisional)</td>
+<td>:focus-visible 15.4; inert 15.5; popover 17. Modal Dialog: VoiceOver 81% (ARIA-AT, provisional)</td>
+<td>:focus-visible 85; inert 112; popover 125</td>
+<td>No public data on focus-indicator rendering</td>
+</tr>
+<tr class="odd">
+<td>2.5 Input Modalities</td>
+<td>No public browser-level data</td>
+<td>No public browser-level data</td>
+<td>No public browser-level data</td>
+<td>Mainly content requirements</td>
+</tr>
+<tr class="even">
+<td>3.1 Readable</td>
+<td>lang reliably conveyed; xml:lang and language subtags not fully reliable (PowerMapper)</td>
+<td>Same classification (PowerMapper)</td>
+<td>NVDA with Firefox fails subtag tests (PowerMapper)</td>
+<td>Depends on screen reader speech engines</td>
+</tr>
+<tr class="odd">
+<td>3.2 Predictable</td>
+<td>No public browser-level data</td>
+<td>No public browser-level data</td>
+<td>No public browser-level data</td>
+<td>Content responsibility</td>
+</tr>
+<tr class="even">
+<td>3.3 Input Assistance</td>
+<td>Date and time inputs fully supported since 25</td>
+<td>Desktop lacks week and month inputs</td>
+<td>Lacks week and month inputs</td>
+<td>No data on exposure of validation messages</td>
+</tr>
+<tr class="odd">
+<td>4.1 Compatible</td>
+<td>Interop 2024: 100% (preview, end of 2024). ariaNotify() since 141, partial</td>
+<td>Interop 2024: 99.7% (preview, end of 2024). ariaNotify() not supported</td>
+<td>Interop 2024: 100% (preview, end of 2024). ariaNotify() since 150</td>
+<td>WPT pass rates in Section 5.1</td>
+</tr>
+</tbody>
+</table>
+<p>Sources: MDN (2026); Deveria (2026); W3C ARIA and Assistive Technologies Community Group (2026); PowerMapper Software (2025); Web Platform Tests (2026). ARIA-AT percentages are the share of required ("MUST") assertions passed with the most recent assistive technology version tested, except Minimal Data Grid, which reports all assertions. WCAG 2.2 removed success criterion 4.1.1 Parsing.</p>
+<p>Other sources were reviewed and not used for current ratings. Steve Faulkner's HTML5 Accessibility tables are dated April 2022 (github.io edition) and August 2020 (html5accessibility.com) and include Internet Explorer 11. The a11ysupport.io results sampled for this paper date from 2022 and early 2023, and its maintainers note it may not be current. TetraLogical's 2025–2026 screen reader HTML support tables are current and useful as qualitative evidence, but they test mostly one browser per screen reader and give no scores. Appendix B assesses each source.</p>
+<blockquote>
+<p><strong>Author's assessment:</strong> The evidence supports a two-part conclusion. Engines now agree almost completely on what they compute, which is a significant achievement of Interop 2024. The remaining inconsistency lies mostly in the combination of browser and screen reader, in composite widgets, live regions, and media, and much of it is not yet covered by any consensus test. That is a coordination problem as much as an engineering one.</p>
+</blockquote>
+<h1 id="post-source-accessibility">6. Post-source accessibility</h1>
+<h2 id="framework">6.1 Framework</h2>
+<p>Post-source accessibility refers to changes made to content after it leaves its origin and before or during use. The W3C Accessibility at the Edge Community Group's Final Report distinguishes source-authorized changes, "controlled or approved by the website owner", from user-authorized changes, "added by the user, without website involvement or approval" (W3C Accessibility at the Edge Community Group, 2025). The author of this paper is a co-author of that report. Pages are composites: the median website uses 21 third parties on mobile and 23 on desktop (HTTP Archive, 2021), so no single author controls everything a user receives.</p>
+<h2 id="browser-native-post-source-capabilities">6.2 Browser-native post-source capabilities</h2>
+<p>Section 4 described the user-authorized capabilities browsers already ship. Two of them are often described inaccurately. User style sheets, frequently cited as a universal way for users to override author styles, are natively available only in Safari on macOS and, behind an advanced preference, in Firefox; Chromium removed them in 2014 (Chromium Project, 2013), so Chrome and Edge users need an extension. Caret browsing, sometimes described as a Firefox and Edge feature, is also available in Chrome.</p>
+<h2 id="extensions">6.3 Extensions</h2>
+<p>Extension APIs let third-party tools inject CSS, modify the DOM, and add ARIA attributes. Chromium extensions can inject user-origin CSS; the private chrome.automation tree API is not available to them (Section 3.1). Extensions include contrast and color tools, reading aids, text-to-speech tools, and overlay products that add accessibility widgets to pages. Their effectiveness varies, and the paper does not evaluate individual products.</p>
+<h2 id="automatability">6.4 Automatability</h2>
+<p>The Accessibility at the Edge Community Group's Final Report assesses how far each post-source capability can be automated, using four labels: "In many cases", "In some cases", "In no significant way", and "Does not apply" (W3C Accessibility at the Edge Community Group, 2025, section 1.7.3). The report defines "In many cases" as automation that can "successfully remediate and verify outcomes across a broad set of websites." These ratings are the group's expert judgment: the report does not describe a test corpus or measurements, and a W3C Community Group report is not a W3C Standard. Table 5 therefore sets the group's rating for selected capabilities beside independent published evidence and the author's own view.</p>
+<p>Two patterns stand out. First, the evidence supports automated <em>detection</em> far more strongly than automated <em>repair</em>: in a 2017 test by the UK Government Digital Service, ten automated tools together found 71% of 143 known barriers on a test page, and 29% were found by none of them (Duran, 2017). Second, where content must be interpreted, as with images, form labels, headings, and speech, independent studies show useful but imperfect results that still need human review.</p>
+<p><strong>Table 5. Automatability of selected post-source capabilities: Community Group assessment compared with independent evidence (W3C Accessibility at the Edge Community Group, 2025)</strong></p>
+<table>
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 17%" />
+<col style="width: 36%" />
+<col style="width: 23%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Capability</strong></th>
+<th><strong>Community Group rating</strong></th>
+<th><strong>Independent evidence</strong></th>
+<th><strong>Author's assessment</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Provide text alternatives for images</td>
+<td>In many cases</td>
+<td>Missing alt text is detected at scale (WebAIM, 2026). Generated descriptions improve with page context but still include plausible errors, which blind users tend to trust (MacLeod et al., 2017; Mohanbabu &amp; Pavel, 2024)</td>
+<td>Detecting missing alt text: in many cases. Producing correct descriptions: in some cases</td>
+</tr>
+<tr class="even">
+<td>Indicate language</td>
+<td>In many cases</td>
+<td>Language identification is highly accurate for long single-language text and less accurate for short or mixed-language text (Jauhiainen et al., 2019)</td>
+<td>Agrees for the page's language; in some cases for changes of language within a page</td>
+</tr>
+<tr class="odd">
+<td>Adjust text spacing, line height, and fonts to values the user chooses</td>
+<td>In many cases</td>
+<td>WCAG expects users to apply these through style sheets, bookmarklets, or extensions (W3C WAI, n.d.-c); no outcome studies found</td>
+<td>Agrees</td>
+</tr>
+<tr class="even">
+<td>Improve hyperlink visibility</td>
+<td>In many cases</td>
+<td>No independent evaluation found</td>
+<td>Agrees, with limited evidence</td>
+</tr>
+<tr class="odd">
+<td>Associate form labels</td>
+<td>In many cases</td>
+<td>Missing labels are detected on 51% of home pages (WebAIM, 2026). Language-model repair reduces rule violations but does not fix every issue (Fathallah et al., 2025)</td>
+<td>In some cases, because visual proximity does not always identify the intended label</td>
+</tr>
+<tr class="even">
+<td>Expose structural semantics (headings)</td>
+<td>In many cases</td>
+<td>No current independent evaluation of automated heading inference on the web found</td>
+<td>In some cases, for headings inferred from visual styling alone</td>
+</tr>
+<tr class="odd">
+<td>Provide captions for video</td>
+<td>In many cases</td>
+<td>W3C advises that automatic captions usually need significant editing (W3C WAI, 2024b). Error rates differ between speakers (Koenecke et al., 2020)</td>
+<td>In some cases</td>
+</tr>
+<tr class="even">
+<td>Optimize color contrast</td>
+<td>In some cases</td>
+<td>Contrast failures are detected at scale (WebAIM, 2026); text over images and gradients is not reliably evaluated by automated rules (Deque Systems, n.d.)</td>
+<td>Agrees</td>
+</tr>
+<tr class="odd">
+<td>Manage focus through interactive processes</td>
+<td>In some cases</td>
+<td>No independent evaluation found</td>
+<td>Agrees, with limited evidence</td>
+</tr>
+<tr class="even">
+<td>Handle dynamic pages accessibly (including live regions)</td>
+<td>In some cases</td>
+<td>No independent evaluation found; live-region support varies (Section 7.5)</td>
+<td>Agrees, with limited evidence</td>
+</tr>
+<tr class="odd">
+<td>Remediate ARIA roles and attributes</td>
+<td>In some cases</td>
+<td>No independent evaluation of automated ARIA repair found</td>
+<td>Agrees, with limited evidence</td>
+</tr>
+<tr class="even">
+<td>Provide audio description</td>
+<td>In no significant way</td>
+<td>A research system produced short-clip descriptions that blind and low-vision participants preferred to descriptions written by novice humans (Li et al., 2025); timed, production-quality description has not been shown</td>
+<td>In some cases in research settings; in no significant way in production</td>
+</tr>
+<tr class="odd">
+<td>Rebuild or replace an interactive component</td>
+<td>In no significant way</td>
+<td>No independent evaluation found</td>
+<td>Agrees</td>
+</tr>
+</tbody>
+</table>
+<p>Evidence that a problem can be <em>detected</em> automatically is not evidence that an automated <em>fix</em> is correct for users. The studies cited measure different things (detection rates, rated description quality, and speech-recognition error rates) and are not directly comparable. One such system, AccessGuru, is reported by Fathallah et al. (2025) to have reduced an average accessibility-violation severity score by up to 84% across roughly 3,500 real violations — a score reduction, not a count of violations fully fixed — with about 77% similarity to human-developer fixes; the authors stress that results still require human review.</p>
+<h1 id="aria-as-a-post-source-remediation-strategy">7. ARIA as a post-source remediation strategy</h1>
+<h2 id="purpose-and-the-first-rule-of-aria">7.1 Purpose and the first rule of ARIA</h2>
+<p>WAI-ARIA defines roles, states, and properties that convey semantics when native HTML cannot. WAI-ARIA 1.2 has been a W3C Recommendation since June 2023, and ARIA 1.3 is a Working Draft (W3C, 2023, 2026b). The widely cited "first rule of ARIA use" comes from the W3C document <em>Using ARIA</em>, not from the ARIA specification: "If you can use a native HTML element or attribute with the semantics and behavior you require already built in, instead of re-purposing an element and adding an ARIA role, state or property to make it accessible, then do so." W3C retired <em>Using ARIA</em> as a Discontinued Draft on 24 February 2026 and now points readers to the ARIA Authoring Practices Guide (APG) (W3C, 2026c).</p>
+<h2 id="how-browsers-implement-aria">7.2 How browsers implement ARIA</h2>
+<p>Browsers parse ARIA attributes, integrate them into the accessibility tree, apply the specifications' rules for invalid or prohibited usage, map them to platform APIs, and fire events when states change. They do not validate whether an author's use of ARIA is appropriate. Per Core-AAM 1.2, role="button" maps to ROLE_SYSTEM_PUSHBUTTON in MSAA and IA2, the Button control type in UIA, ROLE_PUSH_BUTTON in ATK/AT-SPI, and AXButton in the macOS AX API. A button with a defined aria-pressed value keeps ROLE_SYSTEM_PUSHBUTTON in MSAA and the Button control type in UIA, but maps to IA2_ROLE_TOGGLE_BUTTON in IA2, ROLE_TOGGLE_BUTTON in ATK/AT-SPI, and AXCheckBox with the AXToggle subrole in the AX API (W3C, 2026a).</p>
+<h2 id="effective-and-problematic-post-source-uses">7.3 Effective and problematic post-source uses</h2>
+<p>Post-source ARIA can add missing accessible names, declare live regions, correct roles on elements that clearly function as widgets, and add descriptions. It cannot add behavior: role="button" on a div does not make it focusable or operable. Automated tools may infer purpose incorrectly, composite widget patterns need coordinated roles, states, and keyboard behavior that are hard to inject from outside, and keeping states synchronized with visual state requires knowledge of application logic.</p>
+<h2 id="what-the-data-shows">7.4 What the data shows</h2>
+<p>In the 2026 WebAIM Million, 82.7% of home pages used ARIA (excluding landmark roles). Pages with ARIA averaged 59.1 detected errors, compared with 42 on pages without it (WebAIM, 2026); by the author's calculation, that is about 41% more. WebAIM cautions that this "does not necessarily mean that ARIA introduced these errors," because pages using ARIA also tend to be more complex. The association is consistent with the APG's guidance under the heading "No ARIA is better than Bad ARIA" (W3C WAI, n.d.-a).</p>
+<blockquote>
+<p><strong>Author's assessment:</strong> For post-source remediation, this suggests that ARIA injection without a reliable understanding of content structure and purpose carries a risk of making matters worse.</p>
+</blockquote>
+<h2 id="limitations-and-browser-gaps">7.5 Limitations and browser gaps</h2>
+<p>ARIA changes only what assistive technology is told. It does not alter appearance, keyboard behavior, or focus management; it offers little for users with cognitive or visual needs that are not met through a screen reader; and, as the APG cautions under "No ARIA is better than Bad ARIA", an ARIA role that is not backed by the matching behavior can leave users worse off than no ARIA (W3C WAI, n.d.-a).</p>
+<p>Two gaps are well documented:</p>
+<ul>
+<li><p><strong>Live regions.</strong> Microsoft's explainer for the ariaNotify() API states that ARIA live regions are inconsistently implemented (Microsoft Edge, n.d.). ariaNotify() shipped in Chrome 141 in September 2025, with partial support on some platforms, and in Firefox 150 in April 2026; Safari does not support it (Google, 2025; Mozilla, 2026a; MDN, 2026). ARIA-AT has no live-region test plan beyond alerts.</p></li>
+<li><p><strong>Complex composites.</strong> There is no ARIA-AT test plan for tree or treegrid, and the APG treegrid pattern notes that "some implementations of treegrid may not provide focus to rows" (W3C WAI, n.d.-b).</p></li>
+</ul>
+<h2 id="automation-and-ai">7.6 Automation and AI</h2>
+<p>Machine learning, including AI models, can infer structure, describe images, and propose labels, but generated output can be plausible and wrong, and automated systems cannot confirm that a remediation works for assistive technology users. The Accessibility at the Edge report concludes that "while automation and AI can help, we should not expect these can replace humans entirely," and describes human remediation of automatically identified issues, with the content creator's participation, as "an effective and efficient approach to accomplish accessibility" (W3C Accessibility at the Edge Community Group, 2025, section 5.1). Independent evidence is consistent with the first part of that conclusion: automated tools miss a substantial share of known barriers (Duran, 2017), automatic captions usually need editing (W3C WAI, 2024b), and blind users tend to trust generated image descriptions even when they are wrong (MacLeod et al., 2017). No study was found that measures the efficiency of the combined approach the report recommends. Section 10 examines the on-device AI capability that engines have begun to ship, and the concerns raised about it.</p>
+<h1 id="regulatory-context">8. Regulatory context</h1>
+<p>This section summarizes what current U.S. and European rules require of browsers. Appendix A gives the full comparison, including points that are frequently misstated. The description is factual and does not take positions on policy.</p>
+<p><strong>Section 508 (United States).</strong> The Revised 508 Standards (36 CFR Part 1194; compliance required from 18 January 2018) define "platform software" to include web browsers. Section 502.3 requires platform software to provide documented accessibility services, and states that applications that are also platforms "shall expose the underlying platform accessibility services or implement other documented accessibility services." Section 503.2 requires applications to honor platform settings for color, contrast, font, and focus cursor, but exempts applications designed to be isolated from their platform, including web applications. The standards incorporate WCAG 2.0 (U.S. Access Board, 2017), and a search of the Federal Register on 8 October 2026 found no Access Board proposed or final rule to update them since January 2024 (Federal Register, 2026). Section 508 binds federal agencies and reaches browser vendors through procurement. Google and Mozilla publish Accessibility Conformance Reports for Chrome and Firefox, and Apple's macOS report covers Safari features (Google, n.d.-f; Mozilla, 2024b; Apple, 2024).</p>
+<p><strong>EN 301 549 (Europe).</strong> EN 301 549 V3.2.1 (2021) is the harmonized standard cited under the Web Accessibility Directive for public sector websites and apps (European Commission, 2021a). It treats user agents as software (Clause 11), lists web browsers among platforms, and notes that "for web content, the underlying platform is the user agent." ETSI published V4.1.1, prepared by the CEN/CENELEC/ETSI Joint Working Group on eAccessibility, on 2 September 2026. It moves the web, document, and software baselines to WCAG 2.2 Level A and AA, adds user-preference clauses for web pages (9.7), documents (10.7), and software (11.7), moves authoring-tool requirements to clause 5.10, rewrites the real-time communication clause, and adds annexes mapping the standard to the European Accessibility Act (ETSI, 2026). As of 8 October 2026 it had not been cited in the Official Journal (European Commission, n.d.-a).</p>
+<p><strong>European Accessibility Act.</strong> The EAA (Directive (EU) 2019/882) has applied since 28 June 2025 to listed products, including consumer computers "and operating systems for those hardware systems", smartphones, and e-readers, and to listed services, including e-commerce, banking, and electronic communications. Standalone web browsers are not listed. Whether a browser bundled with an operating system falls within that operating system's scope is not settled by the Directive's text. No harmonized standard had been cited under the EAA as of 8 October 2026 (European Parliament and Council, 2019; European Commission, n.d.-a).</p>
+<p><strong>User preferences in the two frameworks.</strong> Section 508 exempts web applications from honoring platform user preferences (503.2). EN 301 549 V3.2.1 notes that for web content the underlying platform is the user agent, and V4.1.1 adds clauses titled "User preferences for web pages" (9.7) and "User preferences" for software (11.7). Neither framework requires browsers to provide personalized adaptation outside procurement.</p>
+<blockquote>
+<p><strong>Author's assessment:</strong> Read together, these provisions are relevant to the browser-level personalization proposed here.</p>
+</blockquote>
+<h1 id="gap-analysis">9. Gap analysis</h1>
+<p>Because WCAG applies to content, this paper frames gaps not against WCAG conformance but against what users need from the user agent, and maps each to the UAAG 2.0 success criteria that already describe it.</p>
+<p><strong>Table 6. Gaps at the user agent layer</strong></p>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 26%" />
+<col style="width: 31%" />
+<col style="width: 21%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Gap</strong></th>
+<th><strong>What exists today</strong></th>
+<th><strong>What is missing</strong></th>
+<th><strong>Related UAAG 2.0 criteria</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1. Portable preference profile</td>
+<td>Per-browser settings; a few sync within one vendor's account</td>
+<td>A standard, portable description of a user's needs that any browser can apply, and per-site overrides</td>
+<td>2.6.1, 2.6.3, 2.6.5</td>
+</tr>
+<tr class="even">
+<td>2. Standards-based adaptation of any page</td>
+<td>Reading views; Firefox color override; forced colors on Windows; user style sheets in two browsers</td>
+<td>Spacing, font, color, and layout adaptation applied to arbitrary pages from user preferences, without breaking functionality</td>
+<td>1.4.1–1.4.6, 1.7.1–1.7.3, 1.8.13–1.8.15</td>
+</tr>
+<tr class="odd">
+<td>3. Cognitive and reading support</td>
+<td>Vendor-specific reading aids, dictionaries, translation, opt-in AI summaries</td>
+<td>Consistent, preference-driven support across browsers; standard semantics such as WAI-Adapt</td>
+<td>Partly: 1.9.1 (outline view), 2.7.1 (customize display of user interface controls)</td>
+</tr>
+<tr class="even">
+<td>4. Repair of missing semantics</td>
+<td>Image descriptions in Chrome and Edge; PDF OCR in Chrome</td>
+<td>Consistent, labeled, user-controlled repair for names, labels, headings, and landmarks, kept distinct from author-provided content</td>
+<td>Guideline 1.2 (repair missing content), 1.10.1</td>
+</tr>
+<tr class="odd">
+<td>5. Media alternatives</td>
+<td>WebVTT captions everywhere; in-band audio tracks in Safari</td>
+<td>kind="descriptions" in any engine; audio track APIs by default in Chromium and Gecko; browser-voiced, pausable descriptions</td>
+<td>1.1.1, 1.1.4, 1.1.5, 1.1.6, 2.10.5</td>
+</tr>
+<tr class="even">
+<td>6. Consistent assistive technology output</td>
+<td>Near-complete agreement on computed roles and names</td>
+<td>Consensus test coverage for live regions, trees, comboboxes, and landmarks; platform-API tests</td>
+<td>4.1.1, 4.1.2</td>
+</tr>
+<tr class="odd">
+<td>7. Developer tooling</td>
+<td>Accessibility trees, audits, and vision simulation in DevTools</td>
+<td>A preview of what assistive technologies will announce</td>
+<td>(not a UAAG criterion)</td>
+</tr>
+<tr class="even">
+<td>8. New engines and new platforms</td>
+<td>Ladybird and Servo are building accessibility support</td>
+<td>Accessibility requirements in Apple's alternative-engine criteria; funding for new engines</td>
+<td>(not a UAAG criterion)</td>
+</tr>
+</tbody>
+</table>
+<p>Several WCAG 2.2 Level AAA criteria help illustrate what browser support could add. Extended audio description (1.2.7) has no browser support. Visual presentation (1.4.8) is achievable by users only inside reading views or with user style sheets. Reading level (3.1.5) is approached only by opt-in AI summaries, which are not standards-based and whose accuracy is not guaranteed. Pronunciation (3.1.6) is supported only through user-initiated dictionary lookups, such as Edge's dictionary with audio; no browser exposes author-specified pronunciation.<span id="sec_newai" class="anchor"></span></p>
+<h1 id="on-device-ai-and-the-engines-stated-concerns">10. On-device AI and the engines' stated concerns</h1>
+<p>The gaps in Section 9 describe work the browser could do. A recent change in browser capability bears directly on whether that work is now feasible: browser engines have begun shipping general-purpose, on-device AI that runs on the user's own machine. This section describes what has shipped, how a browser can act on a page, and the specific, documented concerns that engine and standards participants have raised about the general AI interface. The concerns are real engineering questions; this section sets each beside the narrower, user-controlled accessibility use to which this paper applies them. Nothing here depends on a particular vendor's product; the capability is the point.</p>
+<h2 id="what-has-shipped">10.1 What has shipped</h2>
+<p>Chrome exposes an on-device language model to code through its Prompt API. As of the Chrome for Developers documentation (last updated 26 August 2026), the Prompt API has been available to Chrome extensions since Chrome 138, and a version for web pages is rolling out in Chrome 148, where the documentation states it "is still being developed" (Google, n.d.-j). The model is Gemini Nano, run locally; the documentation gives no model size but states the feature needs at least 22 GB of free space on the profile's volume, and that the API is available to top-level windows and same-origin iframes but not to Web Workers (Google, n.d.-j). Microsoft's Edge, built on the same engine, has developed a comparable on-device capability; this paper does not independently verify Edge's current status.</p>
+<blockquote>
+<p><strong>Author's assessment:</strong> The significance is not the specific product. It is that a mainstream engine now ships a local model that page and extension code can call, on consumer hardware, without sending page content to a server. Whatever one concludes about the general interface, the computational capability that a browser-level accessibility transformation would require is no longer hypothetical.</p>
+</blockquote>
+<h2 id="how-a-browser-can-act-on-a-page">10.2 How a browser can act on a page</h2>
+<p>A browser already has complete access to the structures it builds from a page, and can modify them before or as the user receives them. Three layers are available, each described elsewhere in this paper:</p>
+<ul>
+<li><p><strong>The DOM.</strong> The browser can read and modify the Document Object Model — adding a missing accessible name, correcting a role, inserting a heading. Extensions do this today through user-origin injection (Section 3.1). As Section 7.3 notes, injected ARIA changes only what assistive technology is told; it cannot add behaviour, so a repaired role on a non-interactive element does not make it operable.</p></li>
+<li><p><strong>The accessibility tree.</strong> The browser computes the role, name, state, and relationship information it passes to assistive technologies (Section 2.1), and holds it in a cached, serializable copy in a privileged process (Section 2.3). This is the highest-leverage layer: it can repair what assistive technology receives without altering the visible page.</p></li>
+<li><p><strong>The style system.</strong> User-origin styles can override author presentation — spacing, colour, contrast, font, reflow — the adaptation described in Gap 2 (Section 9).</p></li>
+</ul>
+<p>A browser-level accessibility transformation therefore combines a capability the browser has always had — reaching into these three layers — with a new one: a local model able to decide what to change. The reaching-in is not new; it is how extensions and assistive technologies already work. What is new is on-device inference good enough to inform it.</p>
+<blockquote>
+<p><strong>Author's assessment:</strong> This reframes the feasibility question. The paper's earlier sections show the browser already repairs malformed markup, reflows content, and translates pages. Acting on the accessibility tree or user-origin styles under the user's stated preferences is the same class of operation, now with a local model to guide it.</p>
+</blockquote>
+<h2 id="who-supplies-and-controls-the-intelligence">10.3 Who supplies and controls the intelligence</h2>
+<p>The post-source framework in Section 6 distinguishes source-authorized changes, controlled by the site owner, from user-authorized changes, made by the user without the site's involvement. The same distinction orders the ways browser-level AI could be applied, along a spectrum:</p>
+<ul>
+<li><p><strong>User-supplied intelligence.</strong> The user runs a local model they control and directs it at any page. A working example is the “Smart Browser” prototype described by Dr. Gregg C. Vanderheiden — Professor Emeritus at the University of Maryland and founder and Director Emeritus of the Trace R&amp;D Center, and presented at the M-Enabling Summit and to NDIA in 2026: built in roughly one person-month and running entirely on a five-year-old laptop, it already makes non-conforming pages satisfy a substantial share of WCAG success criteria through user-controlled settings. Vanderheiden characterizes these as preliminary, first-pass results that require further testing and acceptance by people with disabilities before such tools are relied upon; his work is supported in part by NSF Grant No. 2312370 and NIDILRR/ACL/HHS Grant No. 90REGE008. (Cited here with attribution, pending his confirmation; the figures and framing are his.) The user brings the model.</p></li>
+<li><p><strong>Vendor-supplied capability.</strong> The engine provides a defined, standardized capability that applies accessibility transformations under the user's stated preferences. The engine supplies the model; the user still initiates and controls the adaptation.</p></li>
+</ul>
+<p>Both act on the same three layers in Section 10.2, and both are user-authorized in the Section 6 sense: the user, not the site, decides. Presenting them as a spectrum rather than as competing proposals is deliberate. The case for browser-level accessibility does not depend on which end prevails; it is strengthened by holding both, because the user-controlled property — the safeguard that the concerns in Section 10.4 turn on — holds across the whole range.</p>
+<h2 id="the-engines-documented-concerns">10.4 The engines' documented concerns</h2>
+<p>When the general Prompt API was proposed for the web, engine and standards participants filed specific concerns in public review. These are reproduced here from the original issues, not from secondary summaries, because they bear directly on how a browser-level accessibility capability should be designed. They are documented concerns about a general interface, not settled positions for or against; where a position was proposed or later revised, this paper says so.</p>
+<ul>
+<li><p>Mozilla recorded a "negative" position on the Prompt API, stating that "the more general shape of this API has utility, but encourages model-specific behavior that increases interoperability risk," and that developers tuning to one model "would lead to worse behavior with other browsers or models (or sites blocking access)"; Mozilla added that the work "needs much more baking in userland before web APIs are shipped" (Mozilla, n.d.-i).</p></li>
+<li><p>In the WebKit standards-positions review, a reviewer proposed that WebKit oppose the API and raised that "the API has no user consent mechanism for running inference," that on-device inference can mean "the user pays dearly in battery life and device responsiveness, and sites benefit from free compute," that framing on-device inference "as inherently more private is also misleading," and that "model availability remains a fingerprinting vector." The opening review asked whether the interface "would work well with Apple Intelligence or other WebKit browsers" (WebKit, n.d.-a). As of the date read, this was a proposed resolution, not a confirmed WebKit position.</p></li>
+<li><p>The W3C Technical Architecture Group raised that "on-device models might not meet user, developer, and result expectations," that exposing only two sampling parameters creates "potential interop issues," and that licensing costs "could prevent some independent browsers from shipping a competitive implementation of this API." The TAG first recorded a lack of consensus, then rescinded that resolution and reopened the review, so no final TAG position stands (W3C TAG, n.d.-a).</p></li>
+</ul>
+<p>Table R sets each documented concern beside the narrower accessibility use this paper proposes. The pattern is consistent: most concerns are about open-ended, site-invoked prompting of a general model. A user-controlled accessibility transformation — a constrained task, initiated by the user, benefiting the user — meets several of them by construction, and the rest become design requirements rather than objections.</p>
+<p><strong>Table R. Documented concerns about the general interface, and the user-controlled accessibility use</strong></p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 26%" />
+<col style="width: 39%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Concern (and who raised it)</strong></th>
+<th><strong>What it is about</strong></th>
+<th><strong>How the accessibility use addresses it</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Interoperability — model-specific prompting increases fragmentation risk (Mozilla; W3C TAG)</td>
+<td>Open-ended prompts tuned to one model behaving differently on another</td>
+<td>Accessibility transformations are a constrained, specifiable task — apply defined adaptations to defined preferences — not open-ended prompting. A defined capability surface with a shared test suite (one is in development, per the TAG thread) is far more standardizable than raw model access. The concern argues for a model-agnostic, specified interface, which is what this paper proposes.</td>
+</tr>
+<tr class="even">
+<td>User consent for inference (WebKit review)</td>
+<td>A site invoking inference without the user's knowledge or agreement</td>
+<td>The accessibility use is user-initiated by definition: the user turns it on and states their preferences. Consent is intrinsic, not an added mechanism.</td>
+</tr>
+<tr class="odd">
+<td>Resource and battery cost — "the user pays, the site benefits" (WebKit review)</td>
+<td>A site invoking inference, consuming the user's battery and compute for the site's benefit</td>
+<td>In the accessibility use the user is the direct and intended beneficiary, and the user initiates the work for their own access. The cost/benefit objection to sites invoking inference does not apply to a user invoking it for themselves.</td>
+</tr>
+<tr class="even">
+<td>On-device is not automatically more private (WebKit review)</td>
+<td>Treating on-device as a privacy guarantee when model availability can still be observed</td>
+<td>A fair caution. On-device processing does keep the user's page content on the device — an advantage over cloud remediation and third-party overlays — but model availability as a fingerprinting signal is a real design constraint to mitigate, not a reason against the approach. The paper states both.</td>
+</tr>
+<tr class="odd">
+<td>Independent-browser viability — licensing could exclude smaller engines (W3C TAG)</td>
+<td>Costly model licensing locking out independent browsers</td>
+<td>Reinforces this paper's position (Sections 3.4–3.5, the roadmap, and the funding commitment in the challenge) that new and non-profit engines need accessibility work funded, and that the capability should rest on open, specifiable interfaces, not a single proprietary model.</td>
+</tr>
+<tr class="even">
+<td>Versionless or unstable model behaviour in production (raised generally for the general API)</td>
+<td>A general model changing under applications that depend on it</td>
+<td>Argues for a versioned, testable accessibility capability with defined behaviour and conformance tests — exactly the specified-interface approach this paper recommends, rather than exposing a raw model.</td>
+</tr>
+<tr class="odd">
+<td>"Automated repair is unreliable; overlays failed" (anticipated; consistent with this paper's own caution in Sections 6–7)</td>
+<td>Past automated-accessibility products that overpromised</td>
+<td>The failures this paper documents were of vendor-side products sold as compliance. The approach here is user-side, user-controlled, and on-device, with a human in control and the automatability limits of Section 6 and Table 5 stated plainly. It is a different architecture, not a repeat — and this paper does not claim automated repair is complete or always correct.</td>
+</tr>
+</tbody>
+</table>
+<p>Taken together, the documented concerns do not describe an insurmountable objection to browser-level accessibility. They describe the design of a general AI interface — and, read as requirements, they point toward the same thing this paper proposes: a defined, standardized, user-controlled capability rather than open-ended, site-invoked access to a proprietary model. Section 11 sets out the engineering roadmap; Section 12 shows the cost; Section 13 turns both into measurable commitments.</p>
+<blockquote>
+<p><strong>Author's assessment:</strong> This is the same method the author has seen work in regulatory settings: take the other side's stated concerns seriously and on the record, and show that the specific proposal meets them. Here the concerns are not even settled positions; most are about a general interface, and the accessibility use answers them by being narrower, user-initiated, and user-controlled. What remains is not a technical barrier but a decision about whether to build it.</p>
+</blockquote>
+<h1 id="roadmap-for-engine-and-browser-teams">11. Roadmap for engine and browser teams</h1>
+<p>The roadmap separates work in shared engine code, which every browser on that engine inherits, from browser-product work, which each browser must build. Each phase lists measurable deliverables.</p>
+<p><strong>Table 7. Proposed 36-month roadmap</strong></p>
+<table>
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 28%" />
+<col style="width: 22%" />
+<col style="width: 29%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Phase and months</strong></th>
+<th><strong>Engine work</strong></th>
+<th><strong>Browser-product work</strong></th>
+<th><strong>Measurable deliverables</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1. Foundations (1–6)</td>
+<td>Close remaining WAI-ARIA, AccName, HTML-AAM, and Core-AAM failures; expand platform-API tests; accessibility tree performance</td>
+<td>Fix browser-UI accessibility defects</td>
+<td>WPT pass rates for wai-aria, accname, html-aam, and core-aam published per release; ARIA-AT Candidate plans advanced to Recommended with browser teams</td>
+</tr>
+<tr class="even">
+<td>2. Preferences (7–12)</td>
+<td>Expose user preferences to content through standard media queries and a preference model</td>
+<td>Preference settings UI, profiles, sync, import and export</td>
+<td>A shared preference vocabulary drafted with W3C (WAI-Adapt or successor); profile export and import between at least two browsers</td>
+</tr>
+<tr class="odd">
+<td>3. Adaptation (13–24)</td>
+<td>Preference-driven CSS overrides (spacing, fonts, color, reflow) that preserve functionality; kind="descriptions" and audio track APIs</td>
+<td>Adaptation controls, per-site overrides, media controls</td>
+<td>New WPT tests for preference-driven rendering; no regressions in WCAG 1.4.10 and 1.4.12 test pages</td>
+</tr>
+<tr class="even">
+<td>4. Cognitive and repair support (25–36)</td>
+<td>Labeled repair of missing names, labels, and structure, kept distinguishable from author content</td>
+<td>Reading support, simplified modes, comprehension aids</td>
+<td>Published evaluation with users with cognitive and learning disabilities</td>
+</tr>
+<tr class="odd">
+<td>Integration and quality assurance (1–36)</td>
+<td>Cross-platform regression testing</td>
+<td>Assistive technology compatibility testing</td>
+<td>Results published against ARIA-AT and WPT</td>
+</tr>
+</tbody>
+</table>
+<p>EN 301 549 adds two smaller workstreams: reviewing authentication flows the browser controls, so that no single biological characteristic is the only means of identification (EN 301 549 clause 5.3), noting that in WebAuthn user verification is performed locally by the authenticator, through modalities such as a PIN, password, or biometric (W3C, 2026d); and supporting real-time text in web communication, for which the IETF has specified T.140 text over WebRTC data channels (RFC 8865; Holmberg &amp; Hellström, 2021).</p>
+<h1 id="the-business-case">12. The business case</h1>
+<p>Accessibility is usually argued for on ethical or legal grounds. This section makes the commercial case: what the investment costs, which of a browser vendor's own revenue drivers it protects or strengthens, and how small the gain needed to pay it back is. All inputs are sourced; projections are labeled as author's assessments.</p>
+<h2 id="the-investment">11.1 The investment</h2>
+<p><strong>Table 8. Cost model assumptions</strong></p>
+<table>
+<colgroup>
+<col style="width: 28%" />
+<col style="width: 25%" />
+<col style="width: 45%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Assumption</strong></th>
+<th><strong>Value</strong></th>
+<th><strong>Basis</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Fully loaded cost per engineer-year, large US technology company</td>
+<td>Low $300,000; base $400,000; high $500,000</td>
+<td>Author's derivation: Levels.fyi (a compensation-data website) 2025 median total compensation of $312,000 for senior engineers and about $195,000 for all software engineers (second half of 2025), plus non-wage benefits from the Bureau of Labor Statistics Employer Costs for Employee Compensation (June 2026) and an author-assumed 15–30% overhead, gives about $350,000–$430,000 for a 60/40 senior blend and about $415,000–$505,000 for a senior-only team; the $300,000 low case allows for a less senior team (Levels.fyi, 2025; U.S. Bureau of Labor Statistics, 2026)</td>
+</tr>
+<tr class="even">
+<td>Fully loaded cost per engineer-year, non-profit or contractor</td>
+<td>About $120,000–$150,000; $150,000 used</td>
+<td>Servo's sponsorship tier of $10,000 per month to fund a developer (Servo Project, n.d.-a); Stack Overflow 2025 survey median for back-end developers in Germany, with author-assumed on-costs (Stack Overflow, 2025)</td>
+</tr>
+<tr class="odd">
+<td>Mozilla cost per engineer-year</td>
+<td>$250,000 (placeholder)</td>
+<td>No public compensation data; author estimate</td>
+</tr>
+<tr class="even">
+<td>Phase durations and staffing</td>
+<td>Durations as in Table 7; staffing as in Table 9</td>
+<td>Author estimate</td>
+</tr>
+<tr class="odd">
+<td>Share of each workstream in shared engine code</td>
+<td>30% to 80% by workstream</td>
+<td>Author estimate, offered for correction by engine and browser teams</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Table 9. Effort and cost by workstream (low, base, and high scenarios combine low, base, and high staffing with low, base, and high rates)</strong></p>
+<table>
+<colgroup>
+<col style="width: 35%" />
+<col style="width: 25%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+<col style="width: 13%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Workstream</strong></th>
+<th><strong>Engineer-months (low / base / high)</strong></th>
+<th><strong>Low</strong></th>
+<th><strong>Base</strong></th>
+<th><strong>High</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Phase 1: API mapping and ARIA completeness</td>
+<td>48 / 60 / 72</td>
+<td>$1.20M</td>
+<td>$2.00M</td>
+<td>$3.00M</td>
+</tr>
+<tr class="even">
+<td>Phase 2: Preference framework</td>
+<td>60 / 75 / 90</td>
+<td>$1.50M</td>
+<td>$2.50M</td>
+<td>$3.75M</td>
+</tr>
+<tr class="odd">
+<td>Phase 3: Content adaptation</td>
+<td>180 / 240 / 300</td>
+<td>$4.50M</td>
+<td>$8.00M</td>
+<td>$12.50M</td>
+</tr>
+<tr class="even">
+<td>Phase 4: Cognitive and repair support</td>
+<td>180 / 240 / 300</td>
+<td>$4.50M</td>
+<td>$8.00M</td>
+<td>$12.50M</td>
+</tr>
+<tr class="odd">
+<td>Integration and quality assurance (36 months)</td>
+<td>180 / 270 / 360</td>
+<td>$4.50M</td>
+<td>$9.00M</td>
+<td>$15.00M</td>
+</tr>
+<tr class="even">
+<td>EN 301 549: authentication flow review</td>
+<td>15 / 22.5 / 30</td>
+<td>$0.38M</td>
+<td>$0.75M</td>
+<td>$1.25M</td>
+</tr>
+<tr class="odd">
+<td>EN 301 549: real-time text support</td>
+<td>30 / 45 / 60</td>
+<td>$0.75M</td>
+<td>$1.50M</td>
+<td>$2.50M</td>
+</tr>
+<tr class="even">
+<td>Total per engine-and-browser pair</td>
+<td>693 / 952.5 / 1,212</td>
+<td>$17.3M</td>
+<td>$31.8M</td>
+<td>$50.5M</td>
+</tr>
+</tbody>
+</table>
+<p>Spread over 36 months, that is about $5.8 million (low), $10.6 million (base), or $16.8 million (high) a year, funded as recurring engineering work rather than as a one-time capital project. Peak concurrent staffing is 20, 27.5, and 35 engineers. At non-profit rates the same plan costs about $8.7 million to $15.2 million in total.</p>
+<p><strong>Shared engine work lowers the cost per browser.</strong> Under the engine-share assumptions in Table 8, about half the base-case cost ($15.6 million) is engine work and half ($16.2 million) is browser-product work. Work landed once in Chromium reaches Chrome, Edge, Samsung Internet, and Opera, browsers that together accounted for 76.5% of page views in September 2026 (StatCounter, 2026; a figure that includes Chrome on iOS, which uses WebKit outside the EU and Japan; Apple, n.d.-a, n.d.-b). For four browsers on one engine, building separately would cost about $127 million in the base case; sharing the engine work and building four product layers would cost about $80 million. Chromium already shows shared stewardship of this kind: three of the six owners listed for its shared ui/accessibility directory use microsoft.com addresses (Chromium Project, 2026b).</p>
+<h2 id="three-revenue-pools">11.2 Three revenue pools</h2>
+<p>Browsers are free to users, so any return would arrive through the revenue a browser drives. User-agent accessibility touches three revenue pools that together run to hundreds of billions of dollars. Figures below are marked as <strong>reported</strong> (company filings or official statements) or <strong>forecast</strong> (third-party projections, with publisher and date).</p>
+<h3 id="pool-1-ai-agents-and-agentic-commerce">Pool 1: AI agents and agentic commerce</h3>
+<p><strong>Size (forecast).</strong> Forecasts of U.S. consumer spending that AI agents will initiate, influence, or complete by 2030 range from $190 billion to $385 billion (Morgan Stanley, 2025), through $300 billion to $500 billion (Bain &amp; Company, 2025), to "$900 billion to $1 trillion" of "orchestrated revenue" in U.S. retail goods, and $3 trillion to $5 trillion globally (McKinsey &amp; Company, 2025). These are transaction volumes, not revenue that accrues to browser vendors, and they rest on adoption assumptions stated by each forecaster.</p>
+<p><strong>Monetization (reported).</strong> Vendors already charge for browser agents. Chrome's auto browse is available to Google AI Pro and Ultra subscribers in the United States and India (Google, n.d.-i). Microsoft retired Copilot Mode in Edge in May 2026 and made its agent feature, "Browse with Copilot," part of Microsoft 365 Premium for subscribers in the United States (Microsoft, 2026d), a plan announced at $19.99 a month (Microsoft, 2025b). Opera Neon is sold at $19.90 a month (Opera, 2025). The audiences are large: the Gemini app passed 1 billion monthly users (Google, 2026c); ChatGPT reported more than 900 million weekly active users and more than 50 million consumer subscribers (OpenAI, 2026); and Microsoft 365 Copilot passed 30 million paid seats (Microsoft Corporation, 2026a).</p>
+<p><strong>Reliability is the constraint (reported).</strong> In a study of 300 tasks on 136 live websites, human evaluators found that most agents succeeded about 30% of the time and the best 61.3% (Xue et al., 2025; preprint). On the WebArena benchmark, by comparison, humans succeeded 78.24% of the time and the best agent in the original paper 14.41% (Zhou et al., 2023).</p>
+<p><strong>The link to accessibility (reported).</strong> The Chrome team states that "a well-formed accessibility tree is the primary way AI agents understand your page" (Kulikowski &amp; Hablich, 2026), and Lighthouse now includes an "Agentic Browsing" category that checks, among other things, that interactive elements have programmatic names (Kulikowski &amp; Hablich, 2026). Google's guidance for agent-friendly websites calls the accessibility tree "a high-fidelity map" for agents (Kulikowski &amp; More, 2026). Microsoft's Playwright MCP server operates the browser through "structured accessibility snapshots" (Microsoft, n.d.-c), and Chrome DevTools MCP's page snapshot is "based on the a11y tree" (Google, n.d.-g). OpenAI told publishers that its Atlas browser agent used "ARIA tags—the same labels and roles that support screen readers" (OpenAI, n.d.-a); OpenAI has since deprecated Atlas, which was scheduled to stop working on 9 August 2026, and is moving browser-based agent capabilities into ChatGPT and Codex (OpenAI, n.d.-b). The WebArena research benchmark supports several page representations, and its baseline agents use the accessibility tree (Zhou et al., 2023). An industry study by Merj, a web research company, swapped the ARIA labels of a Save and a Cancel button: one agent clicked Cancel first in 25 of 25 runs, while two others went to Save. Averaged across agents, success on an icon-only button with no accessible name was about 34% in November 2025 and about 45% in March 2026 (Zecchini, 2026). That study is not peer-reviewed and its dataset is unpublished, and the study calls the accessibility-tree explanation "the most plausible mechanism rather than an established one." Not every agent relies on the accessibility tree, and no peer-reviewed study yet isolates accessibility quality as a cause of agent success.</p>
+<blockquote>
+<p><strong>Author's assessment:</strong> Agent reliability on real websites is what stands between vendors' agent subscriptions and the forecast transaction volumes, and the accessibility tree is the input vendors themselves say agents rely on. Engine work that makes the tree complete, correct, and fast is therefore agent-product work. One percent of the lowest 2030 forecast is about $1.9 billion of transactions a year.</p>
+</blockquote>
+<h3 id="pool-2-search-advertising-and-the-longevity-economy">Pool 2: Search, advertising, and the longevity economy</h3>
+<p><strong>Vendor revenue (reported).</strong> Alphabet earned more than 70% of its $402.8 billion of 2025 revenue from online advertising (Alphabet Inc., 2026), that is, more than $280 billion (author's calculation). Apple's Services net sales were $109.2 billion in fiscal 2025, at a 75.4% gross margin, and include licensing revenue from Google whose amount Apple does not disclose (Apple Inc., 2025). For Apple, the court record in <em>United States v. Google LLC</em> reports Google payments of about $20 billion in 2022 (U.S. Department of Justice, 2026b). Mozilla's 2024 royalties were $498.2 million (Mozilla Foundation, 2025).</p>
+<p><strong>The users (reported and forecast).</strong> Americans aged 50 and over contributed $8.3 trillion to the U.S. economy in 2018, and "fifty-six cents of every dollar spent in the United States in 2018 came from someone 50 or older" (Terrell, 2019). AARP's global study with Economist Impact estimated that people aged 50 and over accounted for $35 trillion of consumer spending in 2020 and forecast $96 trillion by 2050 (AARP, 2022). Working-age U.S. adults with disabilities had $674.3 billion of disposable income in 2024 (American Institutes for Research, 2026). About 830 million people worldwide were aged 65 or over in 2024, 10.2% of the population (World Bank, 2026); in the United States the share was about 18.9% on 1 July 2025 (U.S. Census Bureau, 2026, Table 1; author's calculation), and in the European Union 22.0% (Eurostat, 2026a). Disability rises with age: in the United States, 24.3% of people aged 65 to 74 and 45.9% of those aged 75 and over report a disability (U.S. Census Bureau, 2024). WHO estimates that at least 2.2 billion people have a near or distance vision impairment (World Health Organization, 2026), and that hearing loss affects more than 1.5 billion people (World Health Organization, 2021).</p>
+<p><strong>The gap (reported).</strong> Most older adults are online, but fewer transact: 90% of U.S. adults aged 65 and over used the internet in 2025 (Pew Research Center, n.d.), yet in the European Union in 2025, 55% of internet users aged 65 to 74 bought goods or services online, against 78% of all internet users (Eurostat, 2026b). In 2021, 15% of U.S. adults with a disability said they never go online, against 5% of those without one (Pew Research Center, 2021).</p>
+<blockquote>
+<p><strong>Author's assessment:</strong> No published source measures how much search, advertising, or commerce revenue comes from older users or users with disabilities. What the figures do show is scale: the users whose experience browser accessibility most affects are a large and growing share of the population every browser serves, and of its spending, and at Alphabet's advertising base one-tenth of one percent is more than $280 million a year.</p>
+</blockquote>
+<h3 id="pool-3-per-seat-enterprise-and-public-sector-revenue">Pool 3: Per-seat enterprise and public-sector revenue</h3>
+<p><strong>The revenue (reported).</strong> Microsoft reported more than 450 million paid Microsoft 365 commercial seats (Microsoft Corporation, 2026b). Its Productivity and Business Processes segment had fiscal 2026 revenue of $140.0 billion and operating income of $83.9 billion, a 59.9% operating margin (Microsoft Corporation, 2026a; author's calculation). Edge for Business is included with Microsoft 365 plans (Microsoft, n.d.-d). Chrome Enterprise Core is offered at no cost, and Chrome Enterprise Premium is listed at $6 per user per month (Google, n.d.-h).</p>
+<p><strong>Accessibility is a condition of sale (reported).</strong> U.S. federal acquisitions of ICT "shall meet the applicable ICT accessibility standards" unless an exception or exemption applies (Federal Acquisition Regulation, n.d.), and federal guidance tells vendors that "it is not voluntary to complete an ACR if you wish the government to consider purchasing your product" (U.S. General Services Administration, n.d.-b). Google publishes Accessibility Conformance Reports for Chrome, ChromeOS, and Workspace for that purpose (Google, n.d.-f). In the European Union, Directive 2014/24/EU requires that technical specifications for procurement intended for use by natural persons take into account accessibility criteria for persons with disabilities or design for all users, except in duly justified cases (European Parliament and Council, 2014, Article 42). EU public authorities spend about €2.6 trillion a year, about 15% of EU GDP (European Commission, n.d.-b), and the U.S. budget for civilian federal IT was about $67.9 billion in FY2026 (Bracken &amp; Mitchell, 2026). Under the Department of Justice's ADA Title II rule, state and local government entities, including public schools and public colleges and universities, must make web content and mobile apps conform to WCAG 2.1 Level AA, subject to stated exceptions, by 26 April 2027 for entities with a total population of 50,000 or more, or 26 April 2028 for smaller entities and special district governments (U.S. Department of Justice, 2026a).</p>
+<p><strong>Precedent (reported).</strong> In 2010, the Departments of Justice and Education wrote jointly to college and university presidents, after settlements over a pilot of an inaccessible e-book reader: "It is unacceptable for universities to use emerging technology without insisting that this technology be accessible to all students" (U.S. Department of Justice &amp; U.S. Department of Education, 2010).</p>
+<p><strong>Enforcement is uneven (reported).</strong> In GSA's FY2025 government-wide assessment, "inclusion of ICT accessibility in acquisition processes is high but enforcement is low" (U.S. General Services Administration, 2026). In its FY2024 assessment, 50% of reporting entities said they regularly, frequently, or almost always obtain Accessibility Conformance Reports for all products they buy (U.S. General Services Administration, 2024).</p>
+<blockquote>
+<p><strong>Author's assessment:</strong> Accessibility does not create this per-seat revenue, but in public-sector and education markets it is a condition of keeping it, and the ADA Title II dates bring state and local governments, public schools, and public universities into scope in 2027 and 2028. At Microsoft's Productivity and Business Processes scale, one-tenth of one percent of revenue is $140 million, or about $84 million of operating income at the segment's average margin.</p>
+</blockquote>
+<p><strong>A related market signal.</strong> U.S. federal procurement guidance contemplates testing by an independent third party as one way to assess products (U.S. General Services Administration, n.d.-a), and a market for accessibility testing and remediation services exists. This paper does not size that market or rely on it.</p>
+<blockquote>
+<p><strong>Author's assessment:</strong> Third-party accessibility spending suggests that buyers value accessibility outcomes, and enterprise browser offerings are one general avenue through which browser vendors could serve that demand. (The author's employer provides digital accessibility products and services; see Disclosures.)</p>
+</blockquote>
+<h2 id="what-a-small-change-is-worth">11.3 What a small change is worth</h2>
+<p><strong>Table 10. Value of a small change in each revenue pool, compared with the base-case annual cost of about $10.6 million (author's calculations; sensitivities, not forecasts)</strong></p>
+<table>
+<colgroup>
+<col style="width: 31%" />
+<col style="width: 21%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Revenue pool</strong></th>
+<th><strong>Base</strong></th>
+<th><strong>0.1% of base</strong></th>
+<th><strong>1% of base</strong></th>
+<th><strong>Times the annual cost, at 0.1%</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Alphabet online advertising (reported, 2025)</td>
+<td>More than $280 billion</td>
+<td>More than $280 million</td>
+<td>More than $2.8 billion</td>
+<td>More than 26</td>
+</tr>
+<tr class="even">
+<td>U.S. agentic commerce in 2030 (lowest forecast, Morgan Stanley)</td>
+<td>$190 billion of transactions</td>
+<td>$190 million</td>
+<td>$1.9 billion</td>
+<td>About 18</td>
+</tr>
+<tr class="odd">
+<td>Microsoft Productivity and Business Processes (reported, FY2026)</td>
+<td>$140.0 billion</td>
+<td>$140 million</td>
+<td>$1.4 billion</td>
+<td>About 13</td>
+</tr>
+<tr class="even">
+<td>Apple Services (reported, FY2025)</td>
+<td>$109.2 billion</td>
+<td>$109 million</td>
+<td>$1.1 billion</td>
+<td>About 10</td>
+</tr>
+<tr class="odd">
+<td>Mozilla royalties (reported, 2024)</td>
+<td>$498.2 million</td>
+<td>$0.5 million</td>
+<td>$5.0 million</td>
+<td>About 0.05 (pays back at about 2.1%)</td>
+</tr>
+</tbody>
+</table>
+<p>These are sensitivities, not projections: the paper does not claim that accessibility work would move any of these pools by a given amount, and the agentic commerce row is transaction volume, not vendor revenue. They show scale. The program costs about $10.6 million a year; a change of one-tenth of one percent in any of the three reported revenue lines would equal about 10 to more than 26 times that cost.</p>
+<p><strong>Margin.</strong> The program is a fixed operating cost. Any revenue it protects or adds would land in high-margin lines: Microsoft's Productivity and Business Processes segment earned a 59.9% operating margin in fiscal 2026, and Apple's Services a 75.4% gross margin in fiscal 2025 (Microsoft Corporation, 2026a; Apple Inc., 2025; author's calculation for Microsoft). These are segment averages, not the margin on any specific revenue, and they are operating and gross margins rather than EBITDA.</p>
+<blockquote>
+<p><strong>Author's assessment:</strong> For the largest vendors, this is the shape of an attractive investment: a small fixed cost, shared across products through the engine, set against revenue pools in the hundreds of billions that the work protects or enlarges. The decision does not turn on whether the work pays back; it turns on whether a vendor's agents, search, and enterprise products are reliable for the users and buyers who depend on accessibility before a competitor's are.</p>
+</blockquote>
+<h2 id="breakeven">11.4 Breakeven</h2>
+<p><strong>Table 11. What it takes to pay back the base-case annual cost of about $10.6 million (author's calculations from the sources in Section 12.2)</strong></p>
+<table>
+<colgroup>
+<col style="width: 28%" />
+<col style="width: 40%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Measure</strong></th>
+<th><strong>Result</strong></th>
+<th><strong>Basis</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Alphabet, Apple, Microsoft: cost in time of revenue</td>
+<td>About 13 to 17 minutes of one year's revenue</td>
+<td>Alphabet $402.8 billion (2025), Apple $416.2 billion (FY2025), Microsoft $331.8 billion (FY2026)</td>
+</tr>
+<tr class="even">
+<td>Mozilla: cost in time of revenue</td>
+<td>About 5.7 days of 2024 revenue</td>
+<td>$680.4 million total revenue and support</td>
+</tr>
+<tr class="odd">
+<td>Mozilla: Firefox clients retained or won</td>
+<td>About 4.4 million (about 2.1% of monthly active clients); 2.4 million to 6.9 million across scenarios</td>
+<td>$2.43 royalties per client per year (Mozilla, n.d.-h)</td>
+</tr>
+<tr class="even">
+<td>Apple: devices retained or won</td>
+<td>At least about 1.1 million (under 0.1% of the active base); 0.6 million to 1.7 million across scenarios</td>
+<td>At most about $10 per device per year (Apple, 2023)</td>
+</tr>
+<tr class="odd">
+<td>New subscription revenue</td>
+<td>About 44,000 subscribers to a $19.99-a-month plan</td>
+<td>$239.88 per subscriber per year</td>
+</tr>
+<tr class="even">
+<td>New enterprise seats</td>
+<td>About 147,000 Chrome Enterprise Premium seats at list price</td>
+<td>$72 per user per year</td>
+</tr>
+</tbody>
+</table>
+<p>Per-client and per-device values divide reported revenue by reported user counts. Mozilla's royalties of $498.2 million divided by Firefox's 2024 average of 205.3 million monthly active clients come to about $2.43 per client per year; Mozilla's Public Data Report describes this measure as desktop and mobile clients active in the past 28 days, though the data file is published in its desktop section, and clients are installations, not people. Google's payments to Apple of about $20 billion in 2022, against the "more than 2 billion" active devices Apple reported in February 2023, come to at most about $10 per device. No sourced user counts were found for Chrome or Edge. For Mozilla, retaining or winning 0.5% of its 210.1 million monthly active clients (week of 28 September 2026) would be worth about $2.5 million to $2.6 million a year in royalties at the 2024 average, 1% about $5.1 million, 2% about $10.2 million, and 5% about $25.5 million. These are averages, and the average value of a client is not the value of the specific clients that accessibility work would retain.</p>
+<h2 id="what-it-means-for-each-vendor">11.5 What it means for each vendor</h2>
+<p><strong>Table 12. Base-case annual cost compared with vendor resources</strong></p>
+<table>
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 25%" />
+<col style="width: 23%" />
+<col style="width: 27%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Organization (fiscal year)</strong></th>
+<th><strong>Revenue</strong></th>
+<th><strong>Research and development or software development expense</strong></th>
+<th><strong>Base-case annual cost as share of revenue</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Alphabet (FY2025)</td>
+<td>$402.8 billion</td>
+<td>$61.1 billion</td>
+<td>0.003%</td>
+</tr>
+<tr class="even">
+<td>Apple (FY2025)</td>
+<td>$416.2 billion</td>
+<td>$34.6 billion</td>
+<td>0.003%</td>
+</tr>
+<tr class="odd">
+<td>Microsoft (FY2026)</td>
+<td>$331.8 billion</td>
+<td>$35.6 billion</td>
+<td>0.003%</td>
+</tr>
+<tr class="even">
+<td>Mozilla Foundation and subsidiaries (2024)</td>
+<td>$680.4 million</td>
+<td>$290.4 million (software development)</td>
+<td>1.6% at large-company rates; about 1.0% at the author's $250,000 placeholder rate</td>
+</tr>
+<tr class="odd">
+<td>Servo</td>
+<td>About $7,000–$8,000 per month in recurring donations (February–July 2026), plus a €545,400 grant for 2025–2026</td>
+<td>Not applicable</td>
+<td>Not comparable: the non-profit-rate base case is about $4 million per year</td>
+</tr>
+<tr class="even">
+<td>Ladybird</td>
+<td>Budget not published</td>
+<td>Not applicable</td>
+<td>Not comparable</td>
+</tr>
+</tbody>
+</table>
+<p>Sources: Alphabet Inc. (2026); Apple Inc. (2025); Microsoft Corporation (2026a); Mozilla Foundation (2025); Servo Project (2026a, 2026b); Sovereign Tech Agency (n.d.); Ladybird Browser Initiative (n.d.).</p>
+<p>For Mozilla, the profit-and-loss view adds context to the revenue share. Its 2024 total revenue and support exceeded expenses by $92.2 million before tax and $72.1 million after tax, but that total included about $95.4 million of investment income; excluding investment income and gains, revenue was slightly below expenses (Mozilla Foundation, 2025; author's calculation). About 86% of Mozilla's 2024 revenue from customer contracts came from a single customer, which its audited statements do not name. In <em>United States v. Google LLC</em>, the court's remedies decision allows Google to continue paying browser developers for default search placement on a non-exclusive basis, with agreements limited to one year (United States v. Google LLC, 2025). Both parties have appealed to the D.C. Circuit: Google challenges the ruling, and the plaintiffs ask the court to revisit the decision not to ban such payments. Mozilla filed an amicus brief supporting neither party (Courthouse News Service, 2026; MediaPost, 2026).</p>
+<blockquote>
+<p><strong>Author's assessment:</strong> The outcome may affect Mozilla's revenue and therefore its capacity to fund work of this kind.</p>
+<p><strong>Author's assessment:</strong> For the three largest vendors, cost is not the constraint; prioritization and cross-vendor coordination are. For Mozilla the roadmap is a material commitment best shared through upstream work. For Servo and Ladybird it would require dedicated external funding. Shared work, through upstream engine code, WPT, ARIA-AT, and W3C specifications, is the most efficient way to spread the cost.</p>
+</blockquote>
+<h1 id="the-challenge-to-the-browser-industry">13. The challenge to the browser industry</h1>
+<p>The business case leads to a specific challenge, addressed to the browser industry as a whole rather than to any one company: ten commitments, each measurable from public data, so anyone can check whether it has been met.</p>
+<blockquote>
+<p><strong>Author's assessment:</strong> Most of these commitments are also product milestones: for AI agents that work reliably on real websites, and for enterprise products that pass procurement review.</p>
+</blockquote>
+<p><strong>Table 13. Ten measurable commitments</strong></p>
+<table>
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 48%" />
+<col style="width: 21%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Commitment</strong></th>
+<th><strong>How it is measured</strong></th>
+<th><strong>By</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1. Publish accessibility test results with every stable release</td>
+<td>WPT accname, wai-aria, html-aam, and core-aam pass rates published per release for every major engine</td>
+<td>30 June 2027</td>
+</tr>
+<tr class="even">
+<td>2. Make accessibility a scored Interop focus area again, including platform-API tests</td>
+<td>Accessibility focus area in the Interop 2028 selection, with stable-release scores of at least 95%</td>
+<td>Interop 2028 selection</td>
+</tr>
+<tr class="odd">
+<td>3. Close the assistive technology test gap</td>
+<td>At least four new W3C ARIA-AT test plans at Recommended, covering live regions, combobox, landmarks, and tree or treegrid</td>
+<td>31 December 2027</td>
+</tr>
+<tr class="even">
+<td>4. Reach consistent screen reader output on the core widgets</td>
+<td>At least 95% of required ARIA-AT assertions passed by every tested screen reader and browser combination on all Recommended plans</td>
+<td>31 December 2028</td>
+</tr>
+<tr class="odd">
+<td>5. Ship text audio descriptions</td>
+<td>&lt;track kind="descriptions"&gt; and audio track APIs enabled by default in at least two engines</td>
+<td>31 December 2027</td>
+</tr>
+<tr class="even">
+<td>6. Agree on a portable accessibility preference format</td>
+<td>A W3C draft specification, implemented for import and export in at least two browsers from different vendors</td>
+<td>Draft by 31 December 2027; implementations by 30 June 2028</td>
+</tr>
+<tr class="odd">
+<td>7. Adapt any page to the user's stated needs</td>
+<td>Preference-driven spacing, font, color, and reflow adaptation in at least two engines, with new WPT tests</td>
+<td>31 December 2028</td>
+</tr>
+<tr class="even">
+<td>8. Preview what assistive technology will announce</td>
+<td>A screen reader output preview in the developer tools of at least two browsers</td>
+<td>31 December 2027</td>
+</tr>
+<tr class="odd">
+<td>9. Make AI-agent readiness and accessibility one metric</td>
+<td>Scored (not informational-only) developer-tool audits of accessibility and agent readiness built on the same accessibility-tree checks, documented publicly, in at least two browsers</td>
+<td>30 June 2027</td>
+</tr>
+<tr class="even">
+<td>10. Fund the open engines</td>
+<td>Pooled funding sufficient for the non-profit-rate base case (about $4 million a year per engine) committed to Servo and Ladybird accessibility work</td>
+<td>31 December 2027</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Author's assessment:</strong> None of these commitments requires new technology. Each requires a decision to fund work whose payback threshold, as Section 12 shows, is small relative to the revenue or user base of each of the four largest vendors, and the public record will show which vendors made that decision.</p>
+</blockquote>
+<p><strong>For W3C and other standards bodies</strong></p>
+<ol type="1">
+<li><p>Decide where user agent accessibility requirements will live now that UAAG 2.0 will not advance, and connect them to WAI-Adapt and WCAG 3 work.</p></li>
+</ol>
+<ol type="1">
+<li><p>Resume WAI-Adapt publication, or charter a successor focused on a user-preference vocabulary that browsers can implement.</p></li>
+<li><p>Continue Interop accessibility investigations toward a scored platform-API focus area.</p></li>
+</ol>
+<p><strong>Options for policymakers (stated neutrally)</strong></p>
+<ol type="1">
+<li><p>Updating the Section 508 Standards' WCAG 2.0 baseline to WCAG 2.2 would align the U.S. federal web content baseline with EN 301 549 V4.1.1.</p></li>
+</ol>
+<ol type="1">
+<li><p>Clarifying whether browsers bundled with operating systems fall within the European Accessibility Act's product scope would reduce uncertainty for vendors.</p></li>
+<li><p>Including accessibility conformance criteria alongside the web-platform criteria already required of alternative browser engines on mobile platforms could help ensure that new engines address accessibility from the start.</p></li>
+</ol>
+<h1 id="questions-for-discussion">14. Questions for discussion</h1>
+<ol type="1">
+<li><p>Which engine layer, the cached accessibility tree, the style system, or a new component, is the right place for preference-driven adaptation?</p></li>
+</ol>
+<ol type="1">
+<li><p>What would a minimal, portable preference format need to contain, and who should own it?</p></li>
+<li><p>Which ARIA-AT gaps would most improve consistency if closed in 2027?</p></li>
+<li><p>Should user-side repairs be exposed to assistive technologies differently from author content?</p></li>
+<li><p>Are the engine-share estimates in Table 8 reasonable? Engine teams are invited to correct them.</p></li>
+<li><p>Which of the ten commitments in Table 13 can be met first, and which need a change in date or measure to be realistic?</p></li>
+<li><p>Can vendors publish data that would test the business case directly, such as retention among users who turn on accessibility features, or agent task success on pages with complete accessibility trees?</p></li>
+</ol>
+<h1 id="conclusions">15. Conclusions</h1>
+<p>Browser engines now share a common foundation: converged architectures, near-complete agreement on computed semantics, and a growing set of user-side aids. What they have not built is a standard way for a person to state their needs once and have every page adapted to them.</p>
+<p>The case for this work can be made in commercial terms. Section 12 shows that the base-case cost is minutes of annual revenue for the three largest vendors, that the work touches revenue pools worth hundreds of billions of dollars (AI agents, search and advertising from an aging population, and per-seat enterprise and public-sector sales), and that for Mozilla it pays back if the work retains or wins about 2.1% of Firefox's monthly active clients. Section 13 turns that case into ten dated commitments that anyone can check.</p>
+<blockquote>
+<p><strong>Author's assessment:</strong> The obstacles are not mainly technical. They are the absence of a shared preference model, of consensus tests for assistive technology output, of a maintained user agent guideline, and, for the smaller engines, of funding. Each of those is something browser and engine teams, standards groups, accessibility specialists, and funders can act on together.</p>
+</blockquote>
+<h1 id="appendix-a.-u.s.-and-european-regulatory-comparison">Appendix A. U.S. and European regulatory comparison</h1>
+<p>Table A1 compares Section 508 and EN 301 549 on the topics most relevant to browsers. Table A2 lists points about these frameworks that are frequently misstated in discussions of browser accessibility.</p>
+<p><strong>Table A1. Section 508 and EN 301 549 compared on browser-relevant topics</strong></p>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 26%" />
+<col style="width: 27%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Topic</strong></th>
+<th><strong>Revised Section 508 Standards</strong></th>
+<th><strong>EN 301 549 V3.2.1 (cited under the Web Accessibility Directive)</strong></th>
+<th><strong>EN 301 549 V4.1.1 (published 2 September 2026, not yet cited)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Web content baseline</td>
+<td>WCAG 2.0 Level A and AA (E205.4)</td>
+<td>WCAG 2.1 Level A and AA (Clause 9)</td>
+<td>WCAG 2.2 Level A and AA; 4.1.1 Parsing void</td>
+</tr>
+<tr class="even">
+<td>Software, including browsers</td>
+<td>WCAG 2.0 applied to software UI (E207.2); platform software defined to include web browsers</td>
+<td>Clause 11 applies to software; user agents named; web browsers listed as platforms</td>
+<td>Clause 11 retitled "Non-web software"</td>
+</tr>
+<tr class="odd">
+<td>Interoperability with assistive technology</td>
+<td>502</td>
+<td>11.5</td>
+<td>11.5</td>
+</tr>
+<tr class="even">
+<td>User preferences</td>
+<td>503.2; web applications exempt</td>
+<td>11.7; "for web content, the underlying platform is the user agent"</td>
+<td>9.7 (web pages), 10.7 (documents), 11.7 (software)</td>
+</tr>
+<tr class="odd">
+<td>Biometrics</td>
+<td>403.1: not the only means; two dissimilar biometrics permitted</td>
+<td>5.3: not reliant on one biological characteristic</td>
+<td>5.3 (title unchanged)</td>
+</tr>
+<tr class="even">
+<td>Preservation of accessibility information</td>
+<td>404.1 (transmission or conversion)</td>
+<td>5.4 (conversion)</td>
+<td>5.4</td>
+</tr>
+<tr class="odd">
+<td>Privacy</td>
+<td>405.1 (hardware)</td>
+<td>4.2.11 functional performance statement</td>
+<td>4.2.11 (renamed functional performance criterion)</td>
+</tr>
+<tr class="even">
+<td>Authoring tools</td>
+<td>504, including PDF/UA-1 export</td>
+<td>11.8 (repair suggestions only where the tool checks)</td>
+<td>5.10</td>
+</tr>
+<tr class="odd">
+<td>Real-time text</td>
+<td>412.5 reserved; 412.8 legacy TTY support</td>
+<td>6.2, including transmission within 500 ms</td>
+<td>Revised 6.2; 6.7 Total conversation; references include RFC 8831</td>
+</tr>
+<tr class="even">
+<td>Video communication</td>
+<td>412.7 (quality sufficient for sign language)</td>
+<td>6.5 (resolution, frame rate, synchronization)</td>
+<td>6.5</td>
+</tr>
+<tr class="odd">
+<td>Cognitive accessibility</td>
+<td>302.9</td>
+<td>4.2.10; informative Annex D</td>
+<td>4.2.10; Annex D; new WCAG 2.2 criteria</td>
+</tr>
+<tr class="even">
+<td>Legal reach</td>
+<td>Federal agencies' ICT; vendors through procurement; complaints and civil actions under 29 U.S.C. 794d(f)</td>
+<td>Mandatory for public sector bodies under the WAD; procurement; contracts</td>
+<td>Would give a presumption of conformity under the EAA, to the extent cited in the Official Journal</td>
+</tr>
+</tbody>
+</table>
+<p>Sources: U.S. Access Board (2017); ETSI (2021, 2026); European Commission (2021a); 29 U.S.C. § 794d (Legal Information Institute, n.d.).</p>
+<p><strong>Table A2. Frequently misstated points about U.S. and European requirements</strong></p>
+<table>
+<colgroup>
+<col style="width: 39%" />
+<col style="width: 60%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Common statement</strong></th>
+<th><strong>What the sources say</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>EN 301 549 V3.2.1 is the standard organizations must meet to demonstrate EAA compliance</td>
+<td>No harmonized standard had been cited under the EAA as of 8 October 2026. V3.2.1 is cited under the Web Accessibility Directive. Harmonized standards are voluntary routes to a presumption of conformity.</td>
+</tr>
+<tr class="even">
+<td>V4.1.1 is forthcoming</td>
+<td>Published 2 September 2026; Official Journal citation pending</td>
+</tr>
+<tr class="odd">
+<td>Section 508 does not address biometrics, authoring tools, or privacy</td>
+<td>It does: 403.1, 504, and 405.1</td>
+</tr>
+<tr class="even">
+<td>Preservation of accessibility information is unique to Europe</td>
+<td>Section 508 404.1 covers it</td>
+</tr>
+<tr class="odd">
+<td>Authoring tools must provide accessibility checking (11.8)</td>
+<td>11.8.4 requires repair suggestions only where the tool already checks; authoring tools are clause 5.10 in V4.1.1</td>
+</tr>
+<tr class="even">
+<td>Browser vendors must meet EN 301 549</td>
+<td>Standalone browsers are not listed in the EAA; vendors meet EN 301 549 mainly through procurement and contracts</td>
+</tr>
+<tr class="odd">
+<td>The EAA explicitly provides consumer rights of action</td>
+<td>Article 29 requires Member States to provide consumer actions under national law</td>
+</tr>
+<tr class="even">
+<td>The EAA requires accessibility statements</td>
+<td>The EAA requires service information in terms and conditions or an equivalent document (Annex V); accessibility statements are a Web Accessibility Directive requirement. U.S. federal websites are directed to publish accessibility statements by OMB Memorandum M-24-08 (Office of Management and Budget, 2023).</td>
+</tr>
+<tr class="odd">
+<td>EN 301 549 says 87 million people in Europe have disabilities or temporary impairments</td>
+<td>The European Commission estimates about 87 million people in the EU have some form of disability (European Commission, 2021b)</td>
+</tr>
+<tr class="even">
+<td>Browsers should support RFC 4103 for WebRTC real-time text</td>
+<td>RFC 4103 is an RTP payload format; the IETF specification for real-time text over WebRTC data channels is RFC 8865</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Other jurisdictions.</strong> Canada published CAN/ASC-EN 301 549:2024, an identical adoption of EN 301 549 V3.2.1, for federally regulated sectors (Accessibility Standards Canada, 2024). AS EN 301 549:2020 is used in Australian government ICT procurement guidance (for example, NSW Government, 2023).</p>
+<p><strong>U.S. state and local government web content.</strong> The Department of Justice's 2024 rule under Title II of the Americans with Disabilities Act adopts WCAG 2.1 Level AA for state and local government web content and mobile apps. An interim final rule of 20 April 2026 moved the compliance dates to 26 April 2027 for public entities with a total population of 50,000 or more, and to 26 April 2028 for smaller entities and special district governments, without changing the substantive requirements (U.S. Department of Justice, 2026a). The rule regulates content, not user agents.</p>
+<h1 id="appendix-b.-evidence-sources">Appendix B. Evidence sources</h1>
+<p><strong>Table B1. Sources assessed for browser support evidence</strong></p>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 18%" />
+<col style="width: 22%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Source</strong></th>
+<th><strong>Maintainer</strong></th>
+<th><strong>Latest data</strong></th>
+<th><strong>What it measures</strong></th>
+<th><strong>Used in this paper</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Interop 2024 dashboard (wpt.fyi)</td>
+<td>Web Platform Tests project and browser vendors</td>
+<td>Final 2024 results; stable data through February 2025</td>
+<td>Computed roles and accessible names</td>
+<td>Yes</td>
+</tr>
+<tr class="even">
+<td>Web Platform Tests accessibility directories</td>
+<td>Web Platform Tests project</td>
+<td>Daily runs; 6 October 2026 cited</td>
+<td>Computed roles and names; some platform mappings</td>
+<td>Yes</td>
+</tr>
+<tr class="odd">
+<td>W3C ARIA-AT</td>
+<td>W3C ARIA and Assistive Technologies Community Group</td>
+<td>Continuous; read 8 October 2026</td>
+<td>Screen reader output for APG examples</td>
+<td>Yes, marked provisional for Candidate plans</td>
+</tr>
+<tr class="even">
+<td>PowerMapper screen reader tests</td>
+<td>PowerMapper Software</td>
+<td>14 December 2025</td>
+<td>Screen reader and browser reliability on fixed test cases</td>
+<td>Yes, individual figures cited</td>
+</tr>
+<tr class="odd">
+<td>MDN browser-compat-data and caniuse</td>
+<td>Mozilla and community; Alexis Deveria and community</td>
+<td>October 2026</td>
+<td>Feature presence by browser version</td>
+<td>Yes</td>
+</tr>
+<tr class="even">
+<td>TetraLogical screen reader HTML support tables</td>
+<td>TetraLogical</td>
+<td>February to May 2026</td>
+<td>Qualitative screen reader behavior for HTML elements</td>
+<td>Qualitative only</td>
+</tr>
+<tr class="odd">
+<td>HTML5 Accessibility (Steve Faulkner)</td>
+<td>Steve Faulkner</td>
+<td>April 2022 and August 2020</td>
+<td>HTML feature accessibility support</td>
+<td>No: out of date</td>
+</tr>
+<tr class="even">
+<td>a11ysupport.io</td>
+<td>Michael Fairchild and community</td>
+<td>Sampled results 2022–2023</td>
+<td>Assistive technology support for HTML and ARIA</td>
+<td>No: out of date</td>
+</tr>
+</tbody>
+</table>
+<p>Licenses: caniuse data is CC BY 4.0; MDN browser-compat-data is CC0; ARIA-AT is under the W3C Document License; TetraLogical's tables and a11ysupport.io are GPL-3.0; PowerMapper's results are copyrighted, so this paper cites individual figures only.</p>
+<h1 id="disclosures">Disclosures</h1>
+<p>This paper was prepared with the assistance of AI (Anthropic's Claude), which was used to locate and verify sources and to draft text. The author reviewed every statement and source.</p>
+<p>The author writes in a personal capacity. He is currently employed by AudioEye, Inc., which sells digital accessibility products and services, including AI-agent-based accessibility auditing and developer tools announced in October 2026. The views in this paper are his own and do not represent his employer. This paper uses no AudioEye data, products, or materials, and AudioEye did not fund it and has not reviewed it. The author is a co-author of the W3C Accessibility at the Edge Community Group Final Report cited in Sections 6 and 7, and of Laux et al. (1996), cited in Section 1.1.</p>
+<h1 id="about-the-author">About the author</h1>
+<p>Michael G. Paciello has worked in digital accessibility for more than 40 years. He began his career at Digital Equipment Corporation (DEC) in 1982, where he was a Senior Usability and Accessibility Engineer in a department led by the late David L. Stone (d. 1994), DEC’s Vice President of Software Engineering. Stone introduced the concept of Pervasive Accessible Technology (PAT) at the 1991 World Congress on Technology for People with Disabilities — a talk Paciello contributed to, and whose thinking grew out of work the two had done together. Paciello carried that idea forward to the World Wide Web in 1996 (Laux et al., 1996), the lineage this paper extends. He later served as Executive Director of the Yuri Rubinsky Insight Foundation, a partner organization at the 1997 launch of the W3C Web Accessibility Initiative. He is a longtime member of the W3C, the author of <em>Web Accessibility for People with Disabilities</em>, and the founder of The Paciello Group (TPG), Open Access Technologies (OAT), and WebABLE.com (recently donated to Knowbility, an Austin-based accessibility non-profit organization).</p>
+<h1 id="references">References</h1>
+<p>AARP. (2022, November 10). <a href="https://www.aarp.org/press/releases/2022-11-10-aarp-report-finds-that-older-population-makes-significant-and-growing-contributions-to-global-economy">AARP report finds that older population makes significant and growing contributions to global economy</a> (on the <em>Global Longevity Economy Outlook</em>, research by Economist Impact). AARP.</p>
+<p>Accessibility Standards Canada. (2024). <a href="https://accessible.canada.ca/creating-accessibility-standards/summary-can-asc-en-301-5492024-accessibility-requirements-ict-products-and-services-en-301-5492021-idt">Summary: CAN/ASC-EN 301 549:2024 Accessibility requirements for ICT products and services</a>. Accessibility Standards Canada.</p>
+<p>Alphabet Inc. (2026). <a href="https://www.sec.gov/Archives/edgar/data/1652044/000165204426000018/goog-20251231.htm">Form 10-K for the fiscal year ended December 31, 2025</a>. U.S. Securities and Exchange Commission.</p>
+<p>American Institutes for Research. (2026). <a href="https://air.org/sites/default/files/2026-06/The-Purchasing-Power-of-Working-Age-Adults-With-Disabilities-Final-Report-April-2026.pdf">The purchasing power of working-age adults with disabilities: Final report</a> (April 2026). American Institutes for Research.</p>
+<p>Apple. (2023, February 2). <a href="https://www.apple.com/newsroom/2023/02/apple-reports-first-quarter-results/">Apple reports first quarter results</a>. Apple Newsroom.</p>
+<p>Apple. (2024, September 9). <a href="https://support.apple.com/content/dam/edam/applecare/images/en_US/otherassets/accessibility/vpat_macos_sequoia.pdf">macOS Sequoia Voluntary Product Accessibility Template</a>. Apple.</p>
+<p>Apple. (n.d.-a). <a href="https://developer.apple.com/support/alternative-browser-engines/">Using alternative browser engines in the European Union</a>. Apple Developer.</p>
+<p>Apple. (n.d.-b). <a href="https://developer.apple.com/support/alternative-browser-engines-jp">Using alternative browser engines in Japan</a>. Apple Developer.</p>
+<p>Apple. (n.d.-c). <a href="https://developer.apple.com/documentation/appkit/nsaccessibilityprotocol">NSAccessibilityProtocol</a>. Apple Developer Documentation.</p>
+<p>Apple. (n.d.-d). <a href="https://developer.apple.com/documentation/uikit/uiaccessibility">UIAccessibility</a>. Apple Developer Documentation.</p>
+<p>Apple. (n.d.-e). <a href="https://support.apple.com/guide/safari-developer/dev160f70435/mac">Node sidebar in Safari Web Inspector</a>. Safari Developer Help.</p>
+<p>Apple. (n.d.-f). <a href="https://support.apple.com/guide/safari/ibrw1075/mac">Change Advanced settings in Safari on Mac</a>. Safari User Guide.</p>
+<p>Apple. (n.d.-g). <a href="https://support.apple.com/111799">Use VoiceOver Recognition on your iPhone or iPad</a>. Apple Support.</p>
+<p>Apple Inc. (2025). <a href="https://www.sec.gov/Archives/edgar/data/320193/000032019325000079/aapl-20250927.htm">Form 10-K for the fiscal year ended September 27, 2025</a>. U.S. Securities and Exchange Commission.</p>
+<p>Bain &amp; Company. (2025, December 17). <a href="https://www.bain.com/insights/2030-forecast-how-agentic-ai-will-reshape-us-retail-snap-chart/">2030 forecast: How agentic AI will reshape US retail</a>. Bain &amp; Company.</p>
+<p>Beaudry, B. (2025, August 14). <a href="https://developer.chrome.com/blog/windows-uia-support-update">Native UI Automation for Windows in Chromium</a>. Chrome for Developers.</p>
+<p>Bracken, M., &amp; Mitchell, B. (2026, April 3). <a href="https://fedscoop.com/white-house-sets-75-7b-topline-it-budget-for-fiscal-2027/">White House sets $75.7B topline IT budget for fiscal 2027</a>. FedScoop.</p>
+<p>Chromium Project. (2013). <a href="https://codereview.chromium.org/66383005/">Code review 66383005: Remove user style sheet support</a>. Chromium Code Reviews.</p>
+<p>Chromium Project. (2026a). <a href="https://github.com/chromium/chromium/blob/main/extensions/common/api/_manifest_features.json">extensions/common/api/_manifest_features.json, "automation" entry</a> (main branch, read 8 October 2026). Chromium source, GitHub mirror.</p>
+<p>Chromium Project. (2026b). <a href="https://github.com/chromium/chromium/blob/main/ui/accessibility/OWNERS">ui/accessibility/OWNERS</a> (main branch, read 8 October 2026). Chromium source, GitHub mirror.</p>
+<p>Chromium Project. (2026c). <a href="https://github.com/chromium/chromium/blob/main/third_party/blink/common/page/page_zoom.cc">third_party/blink/common/page/page_zoom.cc</a> (main branch, read 8 October 2026). Chromium source, GitHub mirror.</p>
+<p>Chromium Project. (n.d.-a). <a href="https://chromium.googlesource.com/chromium/src/+/main/docs/accessibility/browser/how_a11y_works_2.md">How Chrome accessibility works, part 2</a>. Chromium source documentation.</p>
+<p>Chromium Project. (n.d.-b). <a href="https://chromium.googlesource.com/chromium/src/+/main/docs/accessibility/browser/how_a11y_works_3.md">How Chrome accessibility works, part 3</a>. Chromium source documentation.</p>
+<p>Courthouse News Service. (2026, July 29). <a href="https://courthousenews.com/doj-urges-dc-circuit-to-beef-up-remedies-in-google-monopoly-ruling/">DOJ urges DC Circuit to beef up remedies in Google monopoly ruling</a>. Courthouse News Service.</p>
+<p>Deque Systems. (n.d.). <a href="https://dequeuniversity.com/rules/axe/4.10/color-contrast">Elements must meet minimum color contrast ratio thresholds (axe rule color-contrast)</a>. Deque University.</p>
+<p>Deveria, A. (2026). <a href="https://caniuse.com/">Can I use</a> (data version 1.0.30001815). caniuse.com.</p>
+<p>Duran, M. (2017, February 24). <a href="https://accessibility.blog.gov.uk/2017/02/24/what-we-found-when-we-tested-tools-on-the-worlds-least-accessible-webpage/">What we found when we tested tools on the world's least-accessible webpage</a>. Accessibility in Government blog, UK Government Digital Service.</p>
+<p>ETSI. (2021). <a href="https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf">EN 301 549 V3.2.1: Accessibility requirements for ICT products and services</a>. ETSI.</p>
+<p>ETSI. (2026). <a href="https://www.etsi.org/deliver/etsi_en/301500_301599/301549/04.01.01_60/en_301549v040101p.pdf">EN 301 549 V4.1.1: Accessibility requirements for ICT products and services</a>. ETSI.</p>
+<p>European Commission. (2021a). <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32021D1339">Commission Implementing Decision (EU) 2021/1339 amending Implementing Decision (EU) 2018/2048</a>. EUR-Lex.</p>
+<p>European Commission. (2021b). <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:52021DC0101">Union of Equality: Strategy for the Rights of Persons with Disabilities 2021–2030, COM(2021) 101 final</a>. EUR-Lex.</p>
+<p>European Commission. (n.d.-a). <a href="https://single-market-economy.ec.europa.eu/single-market/goods/european-standards/harmonised-standards_en">Harmonised standards</a>. Single Market and Economy.</p>
+<p>European Commission. (n.d.-b). <a href="https://single-market-economy.ec.europa.eu/single-market/public-procurement_en">Public procurement</a>. Single Market and Economy.</p>
+<p>European Parliament and Council. (2014). <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32014L0024">Directive 2014/24/EU on public procurement</a>. EUR-Lex.</p>
+<p>European Parliament and Council. (2019). <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32019L0882">Directive (EU) 2019/882 on the accessibility requirements for products and services</a>. EUR-Lex.</p>
+<p>Eurostat. (2026a). <a href="https://ec.europa.eu/eurostat/statistics-explained/SEPDF/cache/1271.pdf">Population structure and ageing</a> (Statistics Explained; data extracted 2 February 2026). European Commission.</p>
+<p>Eurostat. (2026b). <a href="https://ec.europa.eu/eurostat/statistics-explained/index.php?title=E-commerce_statistics_for_individuals">E-commerce statistics for individuals</a> (Statistics Explained; data extracted February 2026). European Commission.</p>
+<p>Fathallah, N., Hernández, D., &amp; Staab, S. (2025). <a href="https://arxiv.org/abs/2507.19549">AccessGuru: Leveraging LLMs to detect and correct web accessibility violations in HTML code</a>. In <em>Proceedings of the 27th International ACM SIGACCESS Conference on Computers and Accessibility (ASSETS '25)</em>. ACM.</p>
+<p>Faulkner, S. (2025, January 27). <a href="https://html5accessibility.com/stuff/?p=1499">Ladybird and the old-world boulevardier</a> [Interview with Mike Smith]. HTML Accessibility.</p>
+<p>Federal Acquisition Regulation. (n.d.). <a href="https://www.acquisition.gov/far/39.203">FAR 39.203: Applicability</a> (read 9 October 2026). Acquisition.gov.</p>
+<p>Federal Register. (2026). <a href="https://www.federalregister.gov/api/v1/documents.json?conditions[agencies][]=architectural-and-transportation-barriers-compliance-board&amp;conditions[publication_date][gte]=2024-01-01">Documents from the Architectural and Transportation Barriers Compliance Board published since January 2024</a> (search, read 8 October 2026). Office of the Federal Register.</p>
+<p>Google. (2024, September 24). <a href="https://chromeos.dev/en/posts/frictionless-pdf-accessibility-with-ml-and-ocr">Frictionless PDF accessibility with ML and OCR</a>. ChromeOS.dev.</p>
+<p>Google. (2025). <a href="https://developer.chrome.com/release-notes/141">Chrome 141 release notes</a>. Chrome for Developers.</p>
+<p>Google. (2026a). <a href="https://developer.chrome.com/docs/devtools/accessibility/reference">Accessibility features reference, Chrome DevTools</a>. Chrome for Developers.</p>
+<p>Google. (2026b, June 16). <a href="https://workspaceupdates.googleblog.com/2026/06/expanded-availability-gemini-in-chrome.html">Expanded availability: Gemini in Chrome</a>. Google Workspace Updates.</p>
+<p>Google. (2026c, August 11). <a href="https://blog.google/innovation-and-ai/products/gemini-app/one-billion-monthly-users/">More than 1 billion people are using the Gemini app every month</a>. The Keyword, Google.</p>
+<p>Google. (n.d.-a). <a href="https://developer.chrome.com/docs/extensions/reference/api/scripting">chrome.scripting API reference</a>. Chrome for Developers.</p>
+<p>Google. (n.d.-b). <a href="https://support.google.com/chrome/answer/9311597">Get image descriptions on Chrome</a>. Google Chrome Help.</p>
+<p>Google. (n.d.-c). <a href="https://support.google.com/chrome/answer/10538231">Manage captions and translations in Chrome</a>. Google Chrome Help.</p>
+<p>Google. (n.d.-d). <a href="https://support.google.com/chrome/answer/14218344">Use Reading mode in Chrome</a>. Google Chrome Help.</p>
+<p>Google. (n.d.-e). <a href="https://support.google.com/accessibility/answer/10129654">Use a text cursor to navigate and select text</a>. Google Accessibility Help.</p>
+<p>Google. (n.d.-f). <a href="https://www.google.com/accessibility/customers-partners/">Accessibility for customers and partners (Accessibility Conformance Reports)</a>. Google.</p>
+<p>Google. (n.d.-g). <a href="https://github.com/ChromeDevTools/chrome-devtools-mcp/blob/main/docs/tool-reference.md">Chrome DevTools MCP tool reference</a> (read 8 October 2026). GitHub.</p>
+<p>Google. (n.d.-h). <a href="https://chromeenterprise.google/products/chrome-enterprise-premium/">Chrome Enterprise Premium</a> (read 8 October 2026). Google.</p>
+<p>Google. (n.d.-i). <a href="https://one.google.com/about/google-ai-plans/">Google AI plans</a> (read 9 October 2026). Google One.</p>
+<p>Google. (n.d.-j). Prompt API. Chrome for Developers documentation (page last updated 26 August 2026; read 16 October 2026). https://developer.chrome.com/docs/ai/prompt-api</p>
+<p>Hecker, F. (2007, November 19). <a href="https://frankhecker.com/2007/11/19/mozilla-foundation-grants-and-related-expenditures-for-2007/">Mozilla Foundation grants and related expenditures for 2007</a>. frankhecker.com.</p>
+<p>Holmberg, C., &amp; Hellström, G. (2021). <a href="https://www.rfc-editor.org/rfc/rfc8865">T.140 Real-Time Text Conversation over WebRTC Data Channels (RFC 8865)</a>. RFC Editor.</p>
+<p>HTTP Archive. (2021). <a href="https://almanac.httparchive.org/en/2021/third-parties">Web Almanac 2021: Third parties</a>. HTTP Archive.</p>
+<p>Jauhiainen, T., Lui, M., Zampieri, M., Baldwin, T., &amp; Lindén, K. (2019). <a href="https://doi.org/10.1613/jair.1.11675">Automatic language identification in texts: A survey</a>. <em>Journal of Artificial Intelligence Research, 65</em>, 675–782.</p>
+<p>Koenecke, A., Nam, A., Lake, E., Nudell, J., Quartey, M., Mengesha, Z., Toups, C., Rickford, J. R., Jurafsky, D., &amp; Goel, S. (2020). <a href="https://doi.org/10.1073/pnas.1915768117">Racial disparities in automated speech recognition</a>. <em>Proceedings of the National Academy of Sciences, 117</em>(14), 7684–7689.</p>
+<p>Kulikowski, K., &amp; Hablich, M. (2026, June 22). <a href="https://developer.chrome.com/blog/agent-ready-toolkit">A developer toolkit to make your website agent-ready</a>. Chrome for Developers.</p>
+<p>Kulikowski, K., &amp; More, O. (2026). <a href="https://web.dev/articles/ai-agent-site-ux">Build agent-friendly websites</a> (last updated 1 April 2026). web.dev.</p>
+<p>Ladybird Browser Initiative. (2026). <a href="https://github.com/LadybirdBrowser/ladybird/pull/9156">Add screen-reader support: Orca and VoiceOver (pull request #9156)</a>. GitHub.</p>
+<p>Ladybird Browser Initiative. (n.d.). <a href="https://ladybird.org/">Ladybird project website</a>. Ladybird Browser Initiative.</p>
+<p>Laux, L. F., McNally, P. R., Paciello, M. G., &amp; Vanderheiden, G. C. (1996). Designing the World Wide Web for people with disabilities: A user centered design approach. In <em>Proceedings of the Second Annual ACM Conference on Assistive Technologies (ASSETS '96)</em> (pp. 94–101). ACM. https://doi.org/10.1145/228347.228363</p>
+<p>Legal Information Institute. (n.d.). <a href="https://www.law.cornell.edu/uscode/text/29/794d">29 U.S. Code § 794d: Electronic and information technology</a>. Cornell Law School.</p>
+<p>Levels.fyi. (2025). <a href="https://www.levels.fyi/2025/">End of year pay report 2025</a>. Levels.fyi.</p>
+<p>Leventhal, A. (2001a, January 5). <a href="https://lists.w3.org/Archives/Public/w3c-wai-ig/2001JanMar/0046.html">Message on Netscape accessibility work to the WAI Interest Group</a>. W3C mailing list archive.</p>
+<p>Leventhal, A. (2001b, July 10). <a href="https://lists.w3.org/Archives/Public/w3c-wai-ua/2001JulSep/0071.html">Message on MSAA support in Mozilla to the WAI User Agent Working Group</a>. W3C mailing list archive.</p>
+<p>Leventhal, A. (2001c, December 17). <a href="https://lists.w3.org/Archives/Public/w3c-wai-ig/2001OctDec/1028.html">Mozilla accessibility alpha announcement</a>. W3C mailing list archive.</p>
+<p>Li, C., Padmanabhuni, S., Cheema, M., Seifi, H., &amp; Fazli, P. (2025). <a href="https://arxiv.org/abs/2502.20480">VideoA11y: Method and dataset for accessible video description</a>. In <em>Proceedings of the 2025 CHI Conference on Human Factors in Computing Systems (CHI '25)</em>. ACM.</p>
+<p>Linux Foundation. (n.d.). <a href="https://wiki.linuxfoundation.org/accessibility/iaccessible2/start">IAccessible2</a>. Linux Foundation wiki.</p>
+<p>Linux Foundation Europe. (2023, September 7). <a href="https://linuxfoundation.eu/newsroom/servo-web-rendering-engine-joins-linux-foundation-europe">Servo web rendering engine joins Linux Foundation Europe</a>. Linux Foundation Europe.</p>
+<p>MacLeod, H., Bennett, C. L., Morris, M. R., &amp; Cutrell, E. (2017). <a href="https://www.microsoft.com/en-us/research/publication/understanding-blind-peoples-experiences-computer-generated-captions-social-media-images/">Understanding blind people's experiences with computer-generated captions of social media images</a>. In <em>Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems (CHI '17)</em>. ACM.</p>
+<p>McKinsey &amp; Company. (2025, October 17). <a href="https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-agentic-commerce-opportunity-how-ai-agents-are-ushering-in-a-new-era-for-consumers-and-merchants">The agentic commerce opportunity: How AI agents are ushering in a new era for consumers and merchants</a>. McKinsey &amp; Company.</p>
+<p>MDN. (2026). <a href="https://github.com/mdn/browser-compat-data">browser-compat-data, version 8.1.5</a>. GitHub.</p>
+<p>MediaPost. (2026, August 7). <a href="https://www.mediapost.com/publications/article/417113/tougher-google-antitrust-penalties-would-threaten.html">Tougher Google antitrust penalties threaten Firefox, Mozilla warns</a>. MediaPost.</p>
+<p>Microsoft. (2022, March 17). <a href="https://blogs.windows.com/msedgedev/2022/03/17/appears-to-say-microsoft-edge-auto-generated-image-labels/">"Appears to say": Microsoft Edge auto-generated image labels</a>. Microsoft Edge Blog.</p>
+<p>Microsoft. (2025a, June 30). <a href="https://blogs.windows.com/msedgedev/2025/06/30/removing-ms-high-contrast-and-embracing-standards-based-forced-colors-in-microsoft-edge/">Removing -ms-high-contrast and embracing standards-based forced colors in Microsoft Edge</a>. Microsoft Edge Blog.</p>
+<p>Microsoft. (2025b, October 1). <a href="https://www.microsoft.com/en-us/microsoft-365/blog/2025/10/01/meet-microsoft-365-premium-your-ai-and-productivity-powerhouse/">Meet Microsoft 365 Premium: Your AI and productivity powerhouse</a>. Microsoft 365 Blog.</p>
+<p>Microsoft. (2026a). <a href="https://support.microsoft.com/en-us/microsoft-edge/accessibility-features-in-microsoft-edge-4c696192-338e-9465-b2cd-bd9b698ad19a">Accessibility features in Microsoft Edge</a>. Microsoft Support.</p>
+<p>Microsoft. (2026b). <a href="https://learn.microsoft.com/en-us/deployedge/microsoft-edge-policies/livecaptionsallowed">LiveCaptionsAllowed policy</a>. Microsoft Learn.</p>
+<p>Microsoft. (2026c). <a href="https://support.microsoft.com/en-us/edge/use-immersive-reader-in-microsoft-edge">Use Reading mode in Microsoft Edge</a>. Microsoft Support.</p>
+<p>Microsoft. (2026d, May 13). <a href="https://blogs.windows.com/msedgedev/2026/05/13/new-updates-to-edge-across-desktop-and-mobile/">New updates to Edge across desktop and mobile</a>. Microsoft Edge Blog.</p>
+<p>Microsoft. (n.d.-a). <a href="https://learn.microsoft.com/en-us/windows/win32/winauto/microsoft-active-accessibility-and-ui-automation-compared">Microsoft Active Accessibility and UI Automation compared</a>. Microsoft Learn.</p>
+<p>Microsoft. (n.d.-b). <a href="https://explore.microsoft.com/en-us/edge/features/reading-mode">Reading mode in Microsoft Edge (feature page)</a>. Microsoft.</p>
+<p>Microsoft. (n.d.-c). <a href="https://github.com/microsoft/playwright-mcp">Playwright MCP server README</a> (read 8 October 2026). GitHub.</p>
+<p>Microsoft. (n.d.-d). <a href="https://explore.microsoft.com/en-us/edge/business">Microsoft Edge for Business</a> (read 8 October 2026). Microsoft.</p>
+<p>Microsoft Corporation. (2026a). <a href="https://www.sec.gov/Archives/edgar/data/0000789019/000119312526323632/msft-ex99_1.htm">Fiscal year 2026 fourth quarter earnings release (Form 8-K, Exhibit 99.1)</a>. U.S. Securities and Exchange Commission.</p>
+<p>Microsoft Corporation. (2026b, January 28). <a href="https://www.microsoft.com/en-us/investor/events/fy-2026/earnings-fy-2026-q2">Earnings conference call, fiscal year 2026 second quarter</a>. Microsoft Investor Relations.</p>
+<p>Microsoft Edge. (n.d.). <a href="https://github.com/MicrosoftEdge/MSEdgeExplainers/blob/main/Accessibility/AriaNotify/explainer.md">ARIA Notify explainer</a>. GitHub.</p>
+<p>Mohanbabu, A. G., &amp; Pavel, A. (2024). <a href="https://arxiv.org/abs/2409.03054">Context-aware image descriptions for web accessibility</a>. In <em>Proceedings of the 26th International ACM SIGACCESS Conference on Computers and Accessibility (ASSETS '24)</em>. ACM.</p>
+<p>Morgan Stanley. (2025, December 8). <a href="https://www.morganstanley.com/insights/articles/agentic-commerce-market-impact-outlook">Here come the shopping bots</a>. Morgan Stanley.</p>
+<p>Mozilla. (2024a, November 4). <a href="https://blog.mozilla.org/en/firefox/firefox-ai/help-us-improve-our-alt-text-generation-model/">Help us improve our alt text generation model</a>. Mozilla Blog.</p>
+<p>Mozilla. (2024b). <a href="https://m.wiki.mozilla.org/images/d/d4/Firefox_VPAT_124_on_Windows_OS_%28April_2024%29.pdf">Firefox VPAT 124 on Windows (April 2024)</a>. Mozilla wiki.</p>
+<p>Mozilla. (2026a). <a href="https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Releases/150">Firefox 150 for developers</a>. MDN Web Docs.</p>
+<p>Mozilla. (2026b). <a href="https://github.com/mozilla-firefox/firefox/blob/release/modules/libpref/init/StaticPrefList.yaml">modules/libpref/init/StaticPrefList.yaml, release branch</a> (read 8 October 2026). Firefox source, GitHub mirror.</p>
+<p>Mozilla. (n.d.-a). <a href="https://firefox-source-docs.mozilla.org/accessible/Architecture.html">Firefox accessibility architecture</a>. Firefox Source Docs.</p>
+<p>Mozilla. (n.d.-b). <a href="https://www-archive.mozilla.org/access/unix/architecture">Mozilla accessibility on Unix: architecture</a>. Mozilla archive.</p>
+<p>Mozilla. (n.d.-c). <a href="https://firefox-source-docs.mozilla.org/devtools-user/accessibility_inspector/index.html">Accessibility Inspector</a>. Firefox Source Docs.</p>
+<p>Mozilla. (n.d.-d). <a href="https://support.mozilla.org/en-US/kb/firefox-reader-view-clutter-free-web-pages">Reader View</a>. Mozilla Support.</p>
+<p>Mozilla. (n.d.-e). <a href="https://support.mozilla.org/en-US/kb/firefox-contrast-control">Make reading easier with Firefox's contrast control settings</a>. Mozilla Support.</p>
+<p>Mozilla. (n.d.-f). <a href="https://support.mozilla.org/en-US/kb/font-size-and-zoom-increase-size-of-web-pages">Font size and zoom</a>. Mozilla Support.</p>
+<p>Mozilla. (n.d.-g). <a href="https://support.mozilla.org/en-US/kb/ai-chatbot">Access AI chatbots in Firefox</a>. Mozilla Support.</p>
+<p>Mozilla. (n.d.-h). <a href="https://data.firefox.com/datasets/desktop/user-activity/Worldwide/MAU/index.json">Firefox Public Data Report: User activity, worldwide monthly active users</a> (data file read 8 October 2026). Mozilla.</p>
+<p>Mozilla. (n.d.-i). Prompt API [Standards position, mozilla/standards-positions issue #1213] (read 16 October 2026). GitHub. https://github.com/mozilla/standards-positions/issues/1213</p>
+<p>Mozilla Accessibility Team. (2023, May 9). <a href="https://blog.mozilla.org/accessibility/firefox-113-accessibility-performance/">Firefox 113 significantly boosts accessibility performance</a>. Mozilla Accessibility Blog.</p>
+<p>Mozilla Foundation. (2025). <a href="https://stateof.mozilla.org/pdf/Mozilla%20Fdn%202024%20-%20AuditedFinancials.pdf">Consolidated financial statements, 2024 and 2023</a>. State of Mozilla.</p>
+<p>NLnet. (n.d.). <a href="https://nlnet.nl/project/WPT-PlatformAccessibility/">WPT automatic testing for platform accessibility mappings</a>. NLnet Foundation.</p>
+<p>NSW Government. (2023). <a href="https://www.info.buy.nsw.gov.au/resources/government-accessibility-standards-for-ict">Government accessibility standards for ICT</a>. buy.nsw.</p>
+<p>NV Access. (2025). <a href="https://github.com/nvaccess/nvda/issues/19276">NVDA issue #19276, including a maintainer comment comparing Chromium's UIA and IA2 implementations</a>. GitHub.</p>
+<p>Office of Management and Budget. (2023, December 21). <a href="https://www.whitehouse.gov/wp-content/uploads/2023/12/M-24-08-Strengthening-Digital-Accessibility-and-the-Management-of-Section-508-of-the-Rehabilitation-Act.pdf">M-24-08: Strengthening digital accessibility and the management of Section 508 of the Rehabilitation Act</a>. Executive Office of the President.</p>
+<p>OpenAI. (2026, February 27). <a href="https://openai.com/index/scaling-ai-for-everyone/">Scaling AI for everyone</a>. OpenAI.</p>
+<p>OpenAI. (n.d.-a). <a href="https://help.openai.com/en/articles/12627856-publishers-and-developers-faq">Publishers and developers: FAQ</a> (read 8 October 2026). OpenAI Help Center.</p>
+<p>OpenAI. (n.d.-b). <a href="https://help.openai.com/en/articles/20001371-evolving-atlas-into-chatgpt-for-browser-based-agentic-work">Evolving Atlas into ChatGPT for browser-based agentic work</a> (read 8 October 2026). OpenAI Help Center.</p>
+<p>Opera. (2025, December 11). <a href="https://press.opera.com/2025/12/11/opera-opens-public-access-to-opera-neon-its-experimental-agentic-ai-browser/">Opera opens public access to Opera Neon, its experimental agentic AI browser</a>. Opera press.</p>
+<p>Oppermann, C. (1997, December 5). <a href="https://lists.w3.org/Archives/Public/w3c-wai-ig/1997OctDec/0206.html">Message on Microsoft Active Accessibility 1.1 to the WAI Interest Group</a>. W3C mailing list archive.</p>
+<p>Pew Research Center. (2021, September 10). <a href="https://www.pewresearch.org/short-reads/2021/09/10/americans-with-disabilities-less-likely-than-those-without-to-own-some-digital-devices/">Americans with disabilities less likely than those without to own some digital devices</a>. Pew Research Center.</p>
+<p>Pew Research Center. (n.d.). <a href="https://www.pewresearch.org/chart/internet-use-by-age-2/">Internet use by age</a> (2025 data; read 9 October 2026). Pew Research Center.</p>
+<p>PowerMapper Software. (2025, December 14). <a href="https://www.powermapper.com/tests/screen-readers/">Screen reader compatibility</a>. PowerMapper.</p>
+<p>Servo Project. (2026a, March 31). <a href="https://servo.org/blog/2026/03/31/february-in-servo/">February in Servo</a>. servo.org.</p>
+<p>Servo Project. (2026b, August 31). <a href="https://servo.org/blog/2026/08/31/july-in-servo/">July in Servo</a>. servo.org.</p>
+<p>Servo Project. (2026c, April 13). <a href="https://servo.org/blog/">Servo is now available on crates.io</a>. servo.org.</p>
+<p>Servo Project. (n.d.-a). <a href="https://servo.org/sponsorship">Sponsorship</a>. servo.org.</p>
+<p>Servo Project. (n.d.-b). <a href="https://book.servo.org/design-documentation/accessibility/index.html">Accessibility, The Servo Book</a>. servo.org.</p>
+<p>Simmons, J. (2024, February 1). <a href="https://www.webkit.org/blog/14955/the-web-just-gets-better-with-interop">The web just gets better with Interop 2024</a>. WebKit Blog.</p>
+<p>Simmons, J. (2025, January 14). <a href="https://webkit.org/blog/16413/the-success-of-interop-2024">The success of Interop 2024!</a> WebKit Blog.</p>
+<p>Sovereign Tech Agency. (n.d.). <a href="https://www.sovereign.tech/tech/servo">Servo</a>. Sovereign Tech Agency.</p>
+<p>Stack Overflow. (2025). <a href="https://survey.stackoverflow.co/2025/work">2025 Developer Survey: Work</a>. Stack Overflow.</p>
+<p>StatCounter. (2026). <a href="https://gs.statcounter.com/browser-market-share">Browser market share worldwide, September 2026</a>. StatCounter Global Stats.</p>
+<p>Terrell, K. (2019, December 19). <a href="https://www.aarp.org/advocacy/older-americans-economic-impact-growth-2019/">Americans 50 and older would be world's third-largest economy, AARP study finds</a>. AARP.</p>
+<p>United States v. Google LLC, No. 1:20-cv-03010-APM (D.D.C. Sept. 2, 2025; <a href="https://www.justice.gov/atr/media/1421681/dl">memorandum opinion and final judgment, Dec. 5, 2025</a>). U.S. Department of Justice.</p>
+<p>Updegrove, A. (2006, December 14). <a href="https://www.consortiuminfo.org/author/aupdegrove/page/50">Showing the accessibility way: IBM contributes Project Missouri to the Free Standards Group</a>. ConsortiumInfo.org.</p>
+<p>U.S. Access Board. (2017). <a href="https://www.access-board.gov/ict/">Information and Communication Technology (ICT) Standards and Guidelines, 36 CFR Parts 1193 and 1194</a>. U.S. Access Board.</p>
+<p>U.S. Bureau of Labor Statistics. (2026, September 9). <a href="https://www.bls.gov/news.release/archives/ecec_09092026.htm">Employer costs for employee compensation, June 2026</a>. U.S. Department of Labor.</p>
+<p>U.S. Census Bureau. (2024). <a href="https://www.census.gov/content/dam/Census/library/visualizations/2024/comm/disability-status-by-age.pdf">Disability status by age group (American Community Survey, 2022)</a>. U.S. Census Bureau.</p>
+<p>U.S. Census Bureau. (2026, June 25). <a href="https://www.census.gov/newsroom/press-releases/2026/vintage-2025-pop-estimates.html">Populations in all age groups growing in the South, driven by outlying counties in metro areas (press release CB26-105)</a>. U.S. Census Bureau.</p>
+<p>U.S. Department of Justice. (2026a, April 20). <a href="https://www.federalregister.gov/documents/2026/04/20/2026-07663/extension-of-compliance-dates-for-nondiscrimination-on-the-basis-of-disability-accessibility-of-web">Extension of compliance dates for nondiscrimination on the basis of disability; accessibility of web information and services of state and local government entities (interim final rule)</a>. Federal Register.</p>
+<p>U.S. Department of Justice. (2026b, July 28). <a href="https://www.justice.gov/atr/media/1454586/dl?inline">Response brief and opening brief on cross-appeal for the United States and co-plaintiff states (page proof), United States v. Google LLC, D.C. Cir. Nos. 26-5023, 26-5047, 26-5049</a>. U.S. Department of Justice.</p>
+<p>U.S. Department of Justice &amp; U.S. Department of Education. (2010, June 29). <a href="https://archive.ada.gov/kindle_ltr_eddoj.htm">Joint "Dear Colleague" letter on electronic book readers</a>. U.S. Department of Justice ADA archive.</p>
+<p>U.S. General Services Administration. (2024, December). <a href="https://www.section508.gov/manage/section-508-assessment/2024/findings/acquisition">Governmentwide findings: Acquisition and procurement (FY2024 Section 508 assessment)</a>. Section508.gov.</p>
+<p>U.S. General Services Administration. (2026, March). <a href="https://www.section508.gov/manage/section-508-assessment/2025/executive-summary/">FY2025 government-wide Section 508 assessment: Executive summary</a>. Section508.gov.</p>
+<p>U.S. General Services Administration. (n.d.-a). <a href="https://www.section508.gov/buy/">Buy accessible</a> (read 8 October 2026). Section508.gov.</p>
+<p>U.S. General Services Administration. (n.d.-b). <a href="https://www.section508.gov/sell/acr-vpat-faq/">ACR/VPAT FAQ</a> (read 9 October 2026). Section508.gov.</p>
+<p>W3C. (2015). <a href="https://www.w3.org/TR/UAAG20/">User Agent Accessibility Guidelines (UAAG) 2.0</a> (W3C Working Group Note, 15 December 2015). W3C.</p>
+<p>W3C. (2023). <a href="https://www.w3.org/TR/wai-aria-1.2/">Accessible Rich Internet Applications (WAI-ARIA) 1.2</a> (W3C Recommendation, 6 June 2023). W3C.</p>
+<p>W3C. (2024). <a href="https://www.w3.org/TR/2024/REC-WCAG22-20241212/">Web Content Accessibility Guidelines (WCAG) 2.2</a> (W3C Recommendation, 12 December 2024). W3C.</p>
+<p>W3C. (2026a). <a href="https://www.w3.org/TR/core-aam-1.2/">Core Accessibility API Mappings 1.2</a> (Candidate Recommendation Draft, 23 September 2026). W3C.</p>
+<p>W3C. (2026b). <a href="https://www.w3.org/TR/wai-aria-1.3/">Accessible Rich Internet Applications (WAI-ARIA) 1.3</a> (Working Draft). W3C.</p>
+<p>W3C. (2026c). <a href="https://www.w3.org/TR/using-aria/">Using ARIA</a> (Discontinued Draft, 24 February 2026). W3C.</p>
+<p>W3C. (2026d). <a href="https://www.w3.org/TR/webauthn-3/">Web Authentication: An API for accessing Public Key Credentials, Level 3</a> (W3C Recommendation, 25 August 2026). W3C.</p>
+<p>W3C. (2026e). <a href="https://www.w3.org/TR/html-aam-1.0/">HTML Accessibility API Mappings 1.0</a> (Working Draft, 5 October 2026). W3C.</p>
+<p>W3C. (2026f). <a href="https://www.w3.org/TR/accname-1.2/">Accessible Name and Description Computation 1.2</a> (Working Draft, 2 October 2026). W3C.</p>
+<p>W3C. (n.d.-a). <a href="https://www.w3.org/standards/history/adapt/">WAI-Adapt Explainer: publication history</a>. W3C.</p>
+<p>W3C. (n.d.-b). <a href="https://www.w3.org/standards/history/adapt-symbols/">WAI-Adapt: Symbols Module: publication history</a>. W3C.</p>
+<p>W3C Accessibility at the Edge Community Group. (2025). <a href="https://w3c.github.io/cg-reports/a11yedge/CG-FINAL-a11yedge-capabilities-20251104/">Accessibility capabilities: Post-source code and content</a> (Final Community Group Report, 4 November 2025; not a W3C Standard). Sajka, J. (Ed.); Sajka, J., Wolberger, L., Taylor, J., &amp; Paciello, M. (Authors). The author of this paper is a co-author of this report.</p>
+<p>W3C ARIA and Assistive Technologies Community Group. (2026). <a href="https://aria-at.w3.org/">ARIA-AT reports</a> (read 8 October 2026). W3C.</p>
+<p>W3C TAG. (n.d.-a). Prompt API [Design review, w3ctag/design-reviews issue #1093] (read 16 October 2026). GitHub. https://github.com/w3ctag/design-reviews/issues/1093</p>
+<p>W3C WAI. (2024a). <a href="https://www.w3.org/WAI/standards-guidelines/uaag/">User Agent Accessibility Guidelines (UAAG) overview</a>. W3C Web Accessibility Initiative.</p>
+<p>W3C WAI. (2024b, September 17). <a href="https://www.w3.org/WAI/media/av/captions/">Captions/subtitles, Making Audio and Video Media Accessible</a>. W3C Web Accessibility Initiative.</p>
+<p>W3C WAI. (n.d.-a). <a href="https://www.w3.org/WAI/ARIA/apg/practices/read-me-first/">Read me first, ARIA Authoring Practices Guide</a>. W3C Web Accessibility Initiative.</p>
+<p>W3C WAI. (n.d.-b). <a href="https://www.w3.org/WAI/ARIA/apg/patterns/treegrid/">Treegrid pattern, ARIA Authoring Practices Guide</a>. W3C Web Accessibility Initiative.</p>
+<p>W3C WAI. (n.d.-c). <a href="https://www.w3.org/WAI/WCAG22/Understanding/text-spacing.html">Understanding Success Criterion 1.4.12: Text spacing</a>. W3C Web Accessibility Initiative.</p>
+<p>Web Platform Tests. (2026). <a href="https://wpt.fyi/results/?label=master&amp;label=stable&amp;aligned">Aligned stable results for accname, wai-aria, html-aam, and core-aam</a> (runs of 6 October 2026; the link shows the latest runs). wpt.fyi.</p>
+<p>Web Platform Tests. (n.d.-a). <a href="https://wpt.fyi/interop-2024">Interop 2024 dashboard</a>. wpt.fyi.</p>
+<p>Web Platform Tests. (n.d.-b). <a href="https://web-platform-tests.org/writing-tests/aamtest.html">aamtest tests</a>. web-platform-tests.org.</p>
+<p>Web Platform Tests. (n.d.-c). <a href="https://github.com/web-platform-tests/interop-accessibility">interop-accessibility repository README</a>. GitHub.</p>
+<p>WebAIM. (2026). <a href="https://webaim.org/projects/million/">The WebAIM Million: The 2026 report on the accessibility of the top 1,000,000 home pages</a>. WebAIM.</p>
+<p>WebKit. (n.d.-a). ML Prompt API [Standards position, WebKit/standards-positions issue #495] (read 16 October 2026). GitHub. https://github.com/WebKit/standards-positions/issues/495</p>
+<p>WebKit Bugzilla. (2019). <a href="https://bugs.webkit.org/show_bug.cgi?id=193348">Bug 193348: AX: Introduce isolated accessibility tree</a>. WebKit Bugzilla.</p>
+<p>WebKit Bugzilla. (2022). <a href="https://bugs.webkit.org/show_bug.cgi?id=230253">Bug 230253: Use the AT-SPI D-Bus API instead of ATK</a>. WebKit Bugzilla.</p>
+<p>WebKit Bugzilla. (2025). <a href="https://bugs.webkit.org/show_bug.cgi?id=299705">Bug 299705: isolated accessibility tree work, fixed 7 October 2025</a>. WebKit Bugzilla.</p>
+<p>WebKit Project. (2022). <a href="https://webkit.org/web-inspector/audit-tab/">Web Inspector reference: Audit tab</a>. WebKit.</p>
+<p>WebKit Project. (2026). <a href="https://github.com/WebKit/WebKit/blob/main/Source/WebCore/page/CaptionUserPreferencesMediaAF.cpp">Source/WebCore/page/CaptionUserPreferencesMediaAF.cpp</a> (main branch, read 8 October 2026). WebKit source, GitHub mirror.</p>
+<p>World Bank. (2026). <a href="https://api.worldbank.org/v2/country/WLD/indicator/SP.POP.65UP.TO?format=json&amp;mrv=3">Population ages 65 and above, total and percent of total population, World (indicators SP.POP.65UP.TO and SP.POP.65UP.TO.ZS)</a> (last updated 13 July 2026; based on UN World Population Prospects). World Bank.</p>
+<p>World Health Organization. (2021). <a href="https://www.who.int/publications/i/item/9789240020481">World report on hearing</a>. WHO.</p>
+<p>World Health Organization. (2022). <a href="https://www.who.int/publications/i/item/9789240063600">Global report on health equity for persons with disabilities</a>. WHO.</p>
+<p>World Health Organization. (2026, February 10). <a href="https://www.who.int/news-room/fact-sheets/detail/blindness-and-visual-impairment">Blindness and vision impairment (fact sheet)</a>. WHO.</p>
+<p>Xue, T., Qi, W., Shi, T., Song, C. H., Gou, B., Song, D., Sun, H., &amp; Su, Y. (2025). <a href="https://arxiv.org/abs/2504.01382">An illusion of progress? Assessing the current state of web agents</a> (arXiv:2504.01382). arXiv.</p>
+<p>Zecchini, G. (2026, September 29). <a href="https://merj.com/blog/agent-interaction-research">How AI agents use websites, where they fail, and what to fix</a>. Merj.</p>
+<p>Zhou, S., Xu, F. F., Zhu, H., Zhou, X., Lo, R., Sridhar, A., Cheng, X., Ou, T., Bisk, Y., Fried, D., Alon, U., &amp; Neubig, G. (2023). <a href="https://arxiv.org/abs/2307.13854">WebArena: A realistic web environment for building autonomous agents</a> (arXiv:2307.13854). arXiv.</p>
+
+</main>
+<footer class="site">
+  <div class="wrap">
+    <p>&copy; 2026 Michael G. Paciello. All rights reserved. This paper may be shared in full for
+    the purpose of review and may be quoted or cited with attribution; it may not otherwise be
+    reproduced, republished, or distributed without the author's written permission.</p>
+    <p>Prepared with the assistance of AI (Anthropic's Claude), used to locate and verify sources
+    and to draft text. The author reviewed every statement and source.</p>
+  </div>
+</footer>
+</body>
+</html>
