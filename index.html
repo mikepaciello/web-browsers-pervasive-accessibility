@@ -56,7 +56,7 @@
 <a class="skip" href="#main">Skip to main content</a>
 <header class="site">
   <div class="wrap">
-    <p class="byline">Research paper &middot; Review draft v1.5 (October 2026)</p>
+    <p class="byline">Research paper &middot; Review draft v1.8 (October 2026)</p>
     <h1 style="border:none;margin:.2rem 0 .3rem;font-size:2rem">Web Browsers as a Pervasive Accessibility Solution</h1>
     <p class="byline" style="font-size:1.05rem">Current capabilities, public evidence, and a roadmap for personalized accessibility in the user agent</p>
     <p class="byline"><strong>Michael G. Paciello</strong></p>
@@ -689,6 +689,14 @@
 <p><strong>User preferences in the two frameworks.</strong> Section 508 exempts web applications from honoring platform user preferences (503.2). EN 301 549 V3.2.1 notes that for web content the underlying platform is the user agent, and V4.1.1 adds clauses titled "User preferences for web pages" (9.7) and "User preferences" for software (11.7). Neither framework requires browsers to provide personalized adaptation outside procurement.</p>
 <blockquote>
 <p><strong>Author's assessment:</strong> Read together, these provisions are relevant to the browser-level personalization proposed here.</p>
+</blockquote>
+<h2 id="liability-and-the-user-controlled-model">8.1 Liability and the user-controlled model</h2>
+<p>A question that arises whenever software changes what a user sees is whether the party making the change takes on legal responsibility for the result. For browser-level accessibility adaptation, the question has two directions: whether adapting a page shifts a site owner’s legal obligations onto the browser vendor, and whether it relieves the site owner of those obligations. This section offers the author’s assessment, not legal advice; the point is to identify the question, not to resolve it.</p>
+<p>The obligations in the frameworks this paper examines attach to content and to the entities that provide it. Section 508 binds federal agencies and reaches vendors through procurement; the Web Accessibility Directive and, prospectively, the European Accessibility Act bind covered bodies and economic operators; and litigation under the Americans with Disabilities Act is brought against the covered entity whose service is at issue. In each case the duty runs to the provider of the content or service, not to the user’s software. WCAG itself applies to web content, not to user agents (Section 1.5), and this paper has already noted that user-side aids such as automatically generated image descriptions do not alter the page’s markup, so authors remain responsible for text alternatives under WCAG 1.1.1 (Section 4).</p>
+<p>The user-authorized and source-authorized distinction from the Accessibility at the Edge framework (Section 6) is central here. A user-authorized adaptation is one the user invokes, on their own device, for their own use — the same category as a screen reader, browser zoom, forced-colors mode, or a reading view, all of which users already control today without transferring the site owner’s obligations to the browser vendor. A browser that adapts a page at the user’s request is exercising the user’s long-recognized agency over their own experience, not republishing or warranting the site. On that reading, user-controlled browser adaptation does not move the site owner’s legal duty onto the browser, and it is not designed to.</p>
+<p>By the same logic, it does not relieve the site owner either. Because the adaptation happens on the user’s device at the user’s option, and may not occur at all for other users, the content as delivered is unchanged; the author’s obligation to provide accessible content is not discharged by the possibility that some users’ browsers will repair it. Browser-level personalization therefore complements author-side conformance rather than replacing it, and the legal pressure that currently drives content remediation is not removed by it.</p>
+<blockquote>
+<p>Author’s assessment: The liability question is best treated as a design constraint, not an obstacle. A capability that is user-initiated, user-controlled, and executed on the user’s own device sits in the established category of assistive technology and user-agent configuration, where the user, not the software vendor, directs the adaptation and the content author’s duties are unchanged. A source-authorized capability — one a site invokes, or one a vendor applies automatically to all users without their direction — raises different and harder questions, which is a further reason this paper favors the user-controlled model. These are the author’s views; the allocation of liability is ultimately a legal question that merits analysis by counsel and by the standards and policy bodies named in Sections 8 and 12.</p>
 </blockquote>
 <h1 id="gap-analysis">9. Gap analysis</h1>
 <p>Because WCAG applies to content, this paper frames gaps not against WCAG conformance but against what users need from the user agent, and maps each to the UAAG 2.0 success criteria that already describe it.</p>
@@ -1329,6 +1337,7 @@
 <li><p>Are the engine-share estimates in Table 8 reasonable? Engine teams are invited to correct them.</p></li>
 <li><p>Which of the ten commitments in Table 13 can be met first, and which need a change in date or measure to be realistic?</p></li>
 <li><p>Can vendors publish data that would test the business case directly, such as retention among users who turn on accessibility features, or agent task success on pages with complete accessibility trees?</p></li>
+<li><p>Where does legal responsibility sit when a user’s browser adapts a page for accessibility? If the adaptation is user-initiated and runs on the user’s device, does it leave the content author’s obligations unchanged — as a screen reader or reading view does today — and what, if anything, would change that analysis for a vendor-provided or automatically applied capability?</p></li>
 </ol>
 <h1 id="conclusions">15. Conclusions</h1>
 <p>Browser engines now share a common foundation: converged architectures, near-complete agreement on computed semantics, and a growing set of user-side aids. What they have not built is a standard way for a person to state their needs once and have every page adapted to them.</p>
@@ -1544,8 +1553,8 @@
 </tr>
 <tr class="even">
 <td>TetraLogical screen reader HTML support tables</td>
-<td>TetraLogical</td>
-<td>February to May 2026</td>
+<td>TetraLogical (Steve Faulkner, ed.)</td>
+<td>Blog July 2025 (updated Aug 2026); lookup updated May 2026</td>
 <td>Qualitative screen reader behavior for HTML elements</td>
 <td>Qualitative only</td>
 </tr>
@@ -1611,6 +1620,7 @@
 <p>Eurostat. (2026b). <a href="https://ec.europa.eu/eurostat/statistics-explained/index.php?title=E-commerce_statistics_for_individuals">E-commerce statistics for individuals</a> (Statistics Explained; data extracted February 2026). European Commission.</p>
 <p>Fathallah, N., Hernández, D., &amp; Staab, S. (2025). <a href="https://arxiv.org/abs/2507.19549">AccessGuru: Leveraging LLMs to detect and correct web accessibility violations in HTML code</a>. In <em>Proceedings of the 27th International ACM SIGACCESS Conference on Computers and Accessibility (ASSETS '25)</em>. ACM.</p>
 <p>Faulkner, S. (2025, January 27). <a href="https://html5accessibility.com/stuff/?p=1499">Ladybird and the old-world boulevardier</a> [Interview with Mike Smith]. HTML Accessibility.</p>
+<p>Faulkner, S. (Ed.). (2026). Screen reader HTML support tables [Blog post and lookup tool]. TetraLogical. Blog posted 10 July 2025, updated 21 August 2026; lookup tool updated 7 May 2026. Retrieved from <a href="https://tetralogical.com/blog/2025/07/10/html-support/">blog post</a> and <a href="https://tetralogical.github.io/screen-reader-HTML-support/lookup/lookup.html">lookup tool</a>.</p>
 <p>Federal Acquisition Regulation. (n.d.). <a href="https://www.acquisition.gov/far/39.203">FAR 39.203: Applicability</a> (read 9 October 2026). Acquisition.gov.</p>
 <p>Federal Register. (2026). <a href="https://www.federalregister.gov/api/v1/documents.json?conditions[agencies][]=architectural-and-transportation-barriers-compliance-board&amp;conditions[publication_date][gte]=2024-01-01">Documents from the Architectural and Transportation Barriers Compliance Board published since January 2024</a> (search, read 8 October 2026). Office of the Federal Register.</p>
 <p>Google. (2024, September 24). <a href="https://chromeos.dev/en/posts/frictionless-pdf-accessibility-with-ml-and-ocr">Frictionless PDF accessibility with ML and OCR</a>. ChromeOS.dev.</p>
@@ -1627,7 +1637,7 @@
 <p>Google. (n.d.-g). <a href="https://github.com/ChromeDevTools/chrome-devtools-mcp/blob/main/docs/tool-reference.md">Chrome DevTools MCP tool reference</a> (read 8 October 2026). GitHub.</p>
 <p>Google. (n.d.-h). <a href="https://chromeenterprise.google/products/chrome-enterprise-premium/">Chrome Enterprise Premium</a> (read 8 October 2026). Google.</p>
 <p>Google. (n.d.-i). <a href="https://one.google.com/about/google-ai-plans/">Google AI plans</a> (read 9 October 2026). Google One.</p>
-<p>Google. (n.d.-j). Prompt API. Chrome for Developers documentation (page last updated 26 August 2026; read 16 October 2026). https://developer.chrome.com/docs/ai/prompt-api</p>
+<p>Google. (n.d.-j). <a href="https://developer.chrome.com/docs/ai/prompt-api">Prompt API</a>. Chrome for Developers documentation (page last updated 26 August 2026; read 16 October 2026).</p>
 <p>Hecker, F. (2007, November 19). <a href="https://frankhecker.com/2007/11/19/mozilla-foundation-grants-and-related-expenditures-for-2007/">Mozilla Foundation grants and related expenditures for 2007</a>. frankhecker.com.</p>
 <p>Holmberg, C., &amp; Hellström, G. (2021). <a href="https://www.rfc-editor.org/rfc/rfc8865">T.140 Real-Time Text Conversation over WebRTC Data Channels (RFC 8865)</a>. RFC Editor.</p>
 <p>HTTP Archive. (2021). <a href="https://almanac.httparchive.org/en/2021/third-parties">Web Almanac 2021: Third parties</a>. HTTP Archive.</p>
@@ -1637,7 +1647,7 @@
 <p>Kulikowski, K., &amp; More, O. (2026). <a href="https://web.dev/articles/ai-agent-site-ux">Build agent-friendly websites</a> (last updated 1 April 2026). web.dev.</p>
 <p>Ladybird Browser Initiative. (2026). <a href="https://github.com/LadybirdBrowser/ladybird/pull/9156">Add screen-reader support: Orca and VoiceOver (pull request #9156)</a>. GitHub.</p>
 <p>Ladybird Browser Initiative. (n.d.). <a href="https://ladybird.org/">Ladybird project website</a>. Ladybird Browser Initiative.</p>
-<p>Laux, L. F., McNally, P. R., Paciello, M. G., &amp; Vanderheiden, G. C. (1996). Designing the World Wide Web for people with disabilities: A user centered design approach. In <em>Proceedings of the Second Annual ACM Conference on Assistive Technologies (ASSETS '96)</em> (pp. 94–101). ACM. https://doi.org/10.1145/228347.228363</p>
+<p>Laux, L. F., McNally, P. R., Paciello, M. G., &amp; Vanderheiden, G. C. (1996). Designing the World Wide Web for people with disabilities: A user centered design approach. In <em>Proceedings of the Second Annual ACM Conference on Assistive Technologies (ASSETS '96)</em> <a href="https://doi.org/10.1145/228347.228363">https://doi.org/10.1145/228347.228363</a></p>
 <p>Legal Information Institute. (n.d.). <a href="https://www.law.cornell.edu/uscode/text/29/794d">29 U.S. Code § 794d: Electronic and information technology</a>. Cornell Law School.</p>
 <p>Levels.fyi. (2025). <a href="https://www.levels.fyi/2025/">End of year pay report 2025</a>. Levels.fyi.</p>
 <p>Leventhal, A. (2001a, January 5). <a href="https://lists.w3.org/Archives/Public/w3c-wai-ig/2001JanMar/0046.html">Message on Netscape accessibility work to the WAI Interest Group</a>. W3C mailing list archive.</p>
@@ -1678,7 +1688,7 @@
 <p>Mozilla. (n.d.-f). <a href="https://support.mozilla.org/en-US/kb/font-size-and-zoom-increase-size-of-web-pages">Font size and zoom</a>. Mozilla Support.</p>
 <p>Mozilla. (n.d.-g). <a href="https://support.mozilla.org/en-US/kb/ai-chatbot">Access AI chatbots in Firefox</a>. Mozilla Support.</p>
 <p>Mozilla. (n.d.-h). <a href="https://data.firefox.com/datasets/desktop/user-activity/Worldwide/MAU/index.json">Firefox Public Data Report: User activity, worldwide monthly active users</a> (data file read 8 October 2026). Mozilla.</p>
-<p>Mozilla. (n.d.-i). Prompt API [Standards position, mozilla/standards-positions issue #1213] (read 16 October 2026). GitHub. https://github.com/mozilla/standards-positions/issues/1213</p>
+<p>Mozilla. (n.d.-i). <a href="https://github.com/mozilla/standards-positions/issues/1213">Prompt API [Standards position, mozilla/standards-positions issue #1213]</a> (read 16 October 2026). GitHub.</p>
 <p>Mozilla Accessibility Team. (2023, May 9). <a href="https://blog.mozilla.org/accessibility/firefox-113-accessibility-performance/">Firefox 113 significantly boosts accessibility performance</a>. Mozilla Accessibility Blog.</p>
 <p>Mozilla Foundation. (2025). <a href="https://stateof.mozilla.org/pdf/Mozilla%20Fdn%202024%20-%20AuditedFinancials.pdf">Consolidated financial statements, 2024 and 2023</a>. State of Mozilla.</p>
 <p>NLnet. (n.d.). <a href="https://nlnet.nl/project/WPT-PlatformAccessibility/">WPT automatic testing for platform accessibility mappings</a>. NLnet Foundation.</p>
@@ -1730,7 +1740,7 @@
 <p>W3C. (n.d.-b). <a href="https://www.w3.org/standards/history/adapt-symbols/">WAI-Adapt: Symbols Module: publication history</a>. W3C.</p>
 <p>W3C Accessibility at the Edge Community Group. (2025). <a href="https://w3c.github.io/cg-reports/a11yedge/CG-FINAL-a11yedge-capabilities-20251104/">Accessibility capabilities: Post-source code and content</a> (Final Community Group Report, 4 November 2025; not a W3C Standard). Sajka, J. (Ed.); Sajka, J., Wolberger, L., Taylor, J., &amp; Paciello, M. (Authors). The author of this paper is a co-author of this report.</p>
 <p>W3C ARIA and Assistive Technologies Community Group. (2026). <a href="https://aria-at.w3.org/">ARIA-AT reports</a> (read 8 October 2026). W3C.</p>
-<p>W3C TAG. (n.d.-a). Prompt API [Design review, w3ctag/design-reviews issue #1093] (read 16 October 2026). GitHub. https://github.com/w3ctag/design-reviews/issues/1093</p>
+<p>W3C TAG. (n.d.-a). <a href="https://github.com/w3ctag/design-reviews/issues/1093">Prompt API [Design review, w3ctag/design-reviews issue #1093]</a> (read 16 October 2026). GitHub.</p>
 <p>W3C WAI. (2024a). <a href="https://www.w3.org/WAI/standards-guidelines/uaag/">User Agent Accessibility Guidelines (UAAG) overview</a>. W3C Web Accessibility Initiative.</p>
 <p>W3C WAI. (2024b, September 17). <a href="https://www.w3.org/WAI/media/av/captions/">Captions/subtitles, Making Audio and Video Media Accessible</a>. W3C Web Accessibility Initiative.</p>
 <p>W3C WAI. (n.d.-a). <a href="https://www.w3.org/WAI/ARIA/apg/practices/read-me-first/">Read me first, ARIA Authoring Practices Guide</a>. W3C Web Accessibility Initiative.</p>
@@ -1741,7 +1751,7 @@
 <p>Web Platform Tests. (n.d.-b). <a href="https://web-platform-tests.org/writing-tests/aamtest.html">aamtest tests</a>. web-platform-tests.org.</p>
 <p>Web Platform Tests. (n.d.-c). <a href="https://github.com/web-platform-tests/interop-accessibility">interop-accessibility repository README</a>. GitHub.</p>
 <p>WebAIM. (2026). <a href="https://webaim.org/projects/million/">The WebAIM Million: The 2026 report on the accessibility of the top 1,000,000 home pages</a>. WebAIM.</p>
-<p>WebKit. (n.d.-a). ML Prompt API [Standards position, WebKit/standards-positions issue #495] (read 16 October 2026). GitHub. https://github.com/WebKit/standards-positions/issues/495</p>
+<p>WebKit. (n.d.-a). <a href="https://github.com/WebKit/standards-positions/issues/495">ML Prompt API [Standards position, WebKit/standards-positions issue #495]</a> (read 16 October 2026). GitHub.</p>
 <p>WebKit Bugzilla. (2019). <a href="https://bugs.webkit.org/show_bug.cgi?id=193348">Bug 193348: AX: Introduce isolated accessibility tree</a>. WebKit Bugzilla.</p>
 <p>WebKit Bugzilla. (2022). <a href="https://bugs.webkit.org/show_bug.cgi?id=230253">Bug 230253: Use the AT-SPI D-Bus API instead of ATK</a>. WebKit Bugzilla.</p>
 <p>WebKit Bugzilla. (2025). <a href="https://bugs.webkit.org/show_bug.cgi?id=299705">Bug 299705: isolated accessibility tree work, fixed 7 October 2025</a>. WebKit Bugzilla.</p>

@@ -4,7 +4,7 @@
 
 **Michael G. Paciello**
 
-> **Status:** Version 1.5 (October 2026). Work in progress — a review draft, subject to peer review for accuracy. Figures and claims are sourced but not yet independently verified by reviewers.
+> **Status:** Version 1.8 (October 2026). Work in progress — a review draft, subject to peer review for accuracy. Figures and claims are sourced but not yet independently verified by reviewers.
 
 ---
 
@@ -24,13 +24,17 @@ The paper examines the three engines that underlie mainstream browsing (Chromium
 
 ## How to cite
 
-> Paciello, M. G. (2026). *Web Browsers as a Pervasive Accessibility Solution: Current capabilities, public evidence, and a roadmap for personalized accessibility in the user agent* (Version 1.5). [Review draft.]
+> Paciello, M. G. (2026). *Web Browsers as a Pervasive Accessibility Solution: Current capabilities, public evidence, and a roadmap for personalized accessibility in the user agent* (Version 1.8). [Review draft.]
 
 *(A citable DOI will be added here once the paper is deposited on Zenodo.)*
 
 ## Feedback and review
 
 This is a review draft. Technical corrections, source checks, and suggestions are welcome — please open an [issue](../../issues) or contact the author directly.
+
+## Accessibility
+
+This paper is provided in accessible HTML, tagged PDF, and Word formats. See [ACCESSIBILITY.md](ACCESSIBILITY.md) for details, known limitations, and how to request an alternative format or report a barrier.
 
 ## License
 
